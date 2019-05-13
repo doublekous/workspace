@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <link rel="icon" href="../../favicon.ico">
+    <title>脉讯工具集(#^_^#)~~</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap-datetimepicker.min.css" rel="stylesheet" >
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/static/css/dashboard.css" rel="stylesheet">
+    <link href="/static/css/jquery.json-viewer.css" rel="stylesheet">
+    <link href="/static/css/select2.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.json-viewer.js"></script>
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/select2.min.js"></script>
+    {% block extra_head_js %}
+    {% endblock %}
+    {% block css %}
+    {% endblock %}
+    <style>
+        body {overflow-y: scroll}
+        .panel-group{max-height:770px;overflow: auto;}
+        .leftMenu{margin:10px;margin-top:5px;}
+        .leftMenu .panel-heading{font-size:14px;padding-left:20px;height:36px;line-height:36px;color:white;position:relative;cursor:pointer;}/*转成手形图标*/
+        .leftMenu .panel-heading span{position:absolute;right:10px;top:12px;}
+        .leftMenu .menu-item-left{padding: 2px; background: transparent; border:1px solid transparent;border-radius: 6px;}
+        .leftMenu .menu-item-left:hover{background:#C4E3F3;border:1px solid #1E90FF;}
+    </style>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" style="color:#fff;" href="/accounts/index/">脉讯工具集(#^_^#)~~</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li><a href="/accounts/logout/">{{ request.user.username }} 登出</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar" style="padding: 0;">
+            <div class="panel-group table-responsive" role="tablist">
+                {% for tool in tools %}
+                    <div class="panel panel-primary leftMenu">
+                        <div class="panel-heading" id="collapseListGroupHeading{{ forloop.counter }}" data-toggle="collapse" data-target="#collapseListGroup{{ forloop.counter }}" role="tab" >
+                            <h4 class="panel-title">
+                                {{ tool.0 }}
+                                <span class="glyphicon glyphicon-chevron-down right"></span>
+                            </h4>
+                        </div>
+                        <div id="collapseListGroup{{ forloop.counter }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading{{ forloop.counter }}">
+                            <ul class="list-group">
+                                {% for ele in tool.1 %}
+                                    <li class="list-group-item">
+                                        <!-- 利用data-target指定URL -->
+                                        <a class="menu-item-left" jump_url={{ ele.2 }} href={{ ele.0 }}>{{ ele.1 }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          {% block content %}
+          <pre id="comment">
+            <p>"""不管时代的潮流和社会的风尚怎样，人总可以凭着自己高贵的品质，超脱时代和社会，走自己正确的道路。"""</p>
+            <p>"""现在，大家都为了电冰箱、汽车、房子而奔波、追逐、竞争。这是我们这个时代的特征了。"""</p>
+            <p>"""但是也有不少人，他们不追求这些物质的东西，他们追求理想和真理，得到了内心的自由和安宁。"""</p>
+          </pre>
+          {% endblock%}
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+        $('.leftMenu ul li').hover(
+                function(){
+                    $(this).children().last().after('<a target="_blank"  style="font-size: 16px;float:right" href="'+$(this).children().first().attr('jump_url')+'">帮助</a>')
+                },
+                function(){
+                    $(this).find('a').last().remove()
+                }
+        );
+        $(document).ready(function(){
+
+            $(function(){
+              $(".panel-heading").click(function(e){
+                  /*切换折叠指示图标*/
+                  $(this).find("span").toggleClass("glyphicon-chevron-down");
+                  $(this).find("span").toggleClass("glyphicon-chevron-up");
+                  $(this).parents('.panel').siblings().find('.collapse').removeClass('in');
+              });
+          });
+            $("#comment").typewriter();
+        });
+{#        function help_word(id){#}
+{#          $.ajax({#}
+{#            'url': '/help_word',#}
+{#            'method': 'POST',#}
+{#            'data': {#}
+{#                'text': $(id).prev().attr('tag')#}
+{#            },#}
+{#            success:function(data){#}
+{#                $('div.col-sm-9.col-sm-offset-3.col-md-10.col-md-offset-2.main').html(data)#}
+{#                $('#comment').html(data)#}
+{#            }#}
+{#          })#}
+{#       }#}
+    </script>
+  </body>
+</html>
