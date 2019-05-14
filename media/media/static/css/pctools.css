@@ -1,0 +1,48 @@
+/* 清除默认样式 */
+body, ul, ol, li, p, h1, h2,  form, fieldset, img, div, input, em {
+  margin: 0;
+  padding: 0; }
+
+ul, ol, li {
+  list-style-type: none; }
+
+body {
+  font-family: Tahoma,Helvetica,microsoftYahei;
+  font-size: 16px;
+  line-height: 1.42857143;
+  width: 100%;
+  height: 100%;
+  }
+.clearfix{zoom:1;}
+.clearfix:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
+.container{padding:30px;overflow:hidden;}
+.aside{width:45%;border-right:1px solid #ccc;margin-bottom:-10000px;padding-bottom:10000px;}
+.main{width:50%;padding-bottom:10000px;margin-bottom:-10000px;}
+.form-group{width:90%;margin-bottom:15px;}
+label{font-size:14px;line-height:30px;}
+.form-control{display: block;
+            width: 100%;
+            padding: 6px 12px;
+            font-size: 12px;
+            color: #555555;
+            background-color: #ffffff;
+            background-image: none;
+            border: 1px solid #ebebeb;
+            border-radius: 3px;}
+.btn{padding:6px 12px;background:#eee;border: 1px solid transparent;border-radius:3px;display:inline-block;font-size:12px;cursor:pointer;}
+.context{padding:0 30px;}
+.title{font-size:18px;}
+.main-text{margin-top:10px;}
+.fl{float:left;}
+.fr{float:right;}
+.control-label{font-size:12px;}
+.m10{margin-left:10px;}
+.mb10{margin-bottom:10px;}
+.whalf{width:30%;}
+.tab2{display:none;}
+.action{background:#ccc;}
+.sub{background:#3385ff;color:#fff;}
+.sub2{background:#FF1041;color:#fff;}
+.w50{width:50%;}
+.ar{text-align: right;}
+.res{font-weight: bold;color: #3385ff;margin-bottom: 5px;}

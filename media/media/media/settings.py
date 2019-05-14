@@ -49,6 +49,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfResponseMiddleware',
 )
 
 ROOT_URLCONF = 'media.urls'
@@ -106,5 +108,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static').replace('\\', '/')
+STATICFILES_DIRS = (
+    ('css', os.path.join(STATIC_ROOT, 'css').replace('\\', '/')),
+    ('js', os.path.join(STATIC_ROOT, 'js').replace('\\', '/')),
+    ('case', os.path.join(STATIC_ROOT, 'case')),
+    ('fonts', os.path.join(STATIC_ROOT, 'fonts')),
+    ('download', os.path.join(STATIC_ROOT, 'download')),
+)
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEDIA_URL = '/download/'
+MEDIA_ROOT = os.path.join(STATIC_ROOT, 'case')
