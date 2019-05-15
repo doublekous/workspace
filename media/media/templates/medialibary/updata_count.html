@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <style>
+        .txt {
+            width: 400px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+跟新了{{ updata_count.count }}条数据
+{% endblock %}

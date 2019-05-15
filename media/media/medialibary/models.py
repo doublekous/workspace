@@ -4,8 +4,7 @@ from django.db import models
 
 
 class MediaLibrary(models.Model):
-   # id = models.AutoField(primary=True)
-
+    id = models.AutoField(primary_key=True)
     url = models.CharField(verbose_name="链接", max_length=255, blank=True, null=True)
     secondpage = models.CharField(verbose_name="二级面板", max_length=255, blank=True, null=True)
     thirdpage = models.CharField(verbose_name="三级面板", max_length=255, blank=True, null=True)
@@ -24,7 +23,7 @@ class MediaLibrary(models.Model):
 
     )
     is_author = models.IntegerField(verbose_name="是否有作者/互动/原创",choices=author_mode, default=0, blank=True, null=True)
-    addpaper = models.CharField(verbose_name="添加人", max_length=255)
+    addpaper = models.CharField(verbose_name="添加人", max_length=255, blank=True, null=True)
     addtime = models.DateField(verbose_name="添加时间", auto_now_add=True)
     updatetime = models.DateField(verbose_name="修改时间", auto_now_add=True)
     latestfetchtime = models.DateField(verbose_name="最新抓取时间", auto_now_add=True)
@@ -49,7 +48,9 @@ class MediaLibrary(models.Model):
         (7, "网站类型"),
         (8, "地域"),
     )
-    many_choice = models.IntegerField(verbose_name="链接", choices=many_choice_mode)
+    many_choice = models.IntegerField(verbose_name="链接", choices=many_choice_mode, blank=True, null=True)
+    is_del = models.IntegerField(verbose_name="是否删除", choices=((1, '是'), (0, '否')), default=0)
+    count = models.IntegerField(verbose_name="修改量",default=0 )
 
 
 

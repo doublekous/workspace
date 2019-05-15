@@ -16,7 +16,7 @@
       <br>
     点击 :<a href="/medialibary/file_down/">下载模板</a>
     <br>
-        <h1>根据链接更新标题、域名和字数</h1>
+        <h1>下载模板，按照模板格式上传文件，ID不用标记</h1>
         <br>
         <div class="form-group file">
             <form name="update_by_url" id="download_mode" action="/medialibary/download_mode/" method="post"
@@ -30,6 +30,82 @@
         </div>
 
     </div>
+     <div class="row">
+            <div class="panel panel-default">
+                <table class="table table-striped" id="ips-refer" >
+                <thead>
+                    <tr>
+                        <th style="text-align: center" >ID</th>
+                        <th style="text-align: center" >链接</th>
+                        <th style="text-align: center" width="5">二级版面</th>
+                        <th style="text-align: center" width="50">三级版面</th>
+                        <th style="text-align: center">讯讯别称</th>
+                        <th style="text-align: center" width="50">搜搜别称</th>
+                        <th style="text-align: center">网站</th>
+                        <th style="text-align: center" width="50">网站类型</th>
+                        <th style="text-align: center">地域</th>
+                        <th style="text-align: center">抓取等级</th>
+                        <th style="text-align: center">昨日抓取量</th>
+                        <th style="text-align: center" width="150">是否有作者/互动/转载</th>
+                        <th style="text-align: center">添加人</th>
+                        <th style="text-align: center">添加时间</th>
+                        <th style="text-align: center">修改时间</th>
+                        <th style="text-align: center">最新抓取时间</th>
+                        <th style="text-align: center">抓取状态</th>
+                        <th style="text-align: center" width="150">作者/互动/原创是否转载</th>
+                        <th style="text-align: center">备注</th>
+                        <th style="text-align: center">是否应用讯讯</th>
+                        <th style="text-align: center">是否应用搜搜</th>
+                        <th style="text-align: center">更多</th>
+                        <th style="text-align: center" width="140">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   {% for result in data %}
+                       <tr>
+                       <th style="text-align: center" width="1">{{ result.id }}</th>
+                        <th style="text-align: center" width="20">{{ result.url }}</th>
+                        <th style="text-align: center">{{ result.secondpage }}</th>
+                        <th style="text-align: center" width="50">{{ result.thirdpage }}</th>
+                        <th style="text-align: center">{{ result.xunxun_nickname }}</th>
+                        <th style="text-align: center" width="50">{{ result.sousou_nickname }}</th>
+                        <th style="text-align: center">{{ result.website }}</th>
+                        <th style="text-align: center" width="50">{{ result.sitetype }}</th>
+                        <th style="text-align: center">{{ result.regional }}</th>
+                        <th style="text-align: center">{{ result.fetchlevel }}</th>
+                        <th style="text-align: center">{{ result.yesterdaycapture }}</th>
+                        <th style="text-align: center" width="150">{{ result.is_author }}</th>
+                        <th style="text-align: center">{{ result.addpaper }}</th>
+                        <th style="text-align: center">{{ result.addtime }}</th>
+                        <th style="text-align: center">{{ result.updatetime }}</th>
+                        <th style="text-align: center">{{ result.latestfetchtime }}</th>
+                        <th style="text-align: center">{{ result.fetchstatus }}</th>
+                        <th style="text-align: center">{{ result.is_process }}</th>
+                        <th style="text-align: center">{{ result.note }}</th>
+                        <th style="text-align: center">{{ result.is_xuxu }}</th>
+                        <th style="text-align: center">{{ result.is_sousou }}</th>
+                        <th style="text-align: center">{{ result.many_choice }}</th>
+                        <th style="text-align: center" width="140">操作</th>
+                        </tr>
+
+                   {% endfor %}
+                        <a class="btn btn-primary" :href="'/community/edit_ip?ip_id='+b.id">编辑</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(b.id)">删除</button>
+
+                   </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+        </div>
+     <aside class="paging">
+            <a>当前{{ page_data.number }}页</a>
+            <a href="{% url 'medialibary:download_mode'%}?page=1">第一页</a>
+            {% for i in page_data.paginator.page_range %}
+            <a href="{% url 'medialibary:download_mode' %}?page={{i}}">{{i}}</a>
+            {% endfor %}
+            <a href="{% url 'medialibary:download_mode'%}?page={{page_data.paginator.num_pages}}">最后一页</a>
+        </aside>
     <a href="/medialibary/export_emp_excel/">导出</a>
 
     <script type="text/javascript">
@@ -46,4 +122,12 @@
             $("#download_mode").submit();
         }
     </script>
+    <aside class="paging">
+            <a>当前{{ page_data.number }}页</a>
+            <a href="{% url 'medialibary:download_mode'%}?page=1">第一页</a>
+            {% for i in page_data.paginator.page_range %}
+            <a href="{% url 'medialibary:download_mode' %}?page={{i}}">{{i}}</a>
+            {% endfor %}
+            <a href="{% url 'medialibary:download_mode'%}?page={{page_data.paginator.num_pages}}">最后一页</a>
+        </aside>
 {% endblock %}

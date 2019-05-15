@@ -6,6 +6,9 @@ import sys
 import dateformatting
 from StringIO import StringIO
 import datetime
+
+from django.core.paginator import Paginator
+from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.views.decorators.csrf import csrf_protect
 
@@ -56,7 +59,14 @@ def file_down(request):
 def download_mode(request):
     """导入csv到数据库"""
     if request.method == 'GET':
-        return render(request, 'medialibary/download_mode.html')
+        # try:
+        #     page = int(request.GET.get('page', 1))
+        # except Exception as e:
+        #     page = 1
+        data = MediaLibrary.objects.all()
+        paginator = Paginator(data, 8)
+        # page_data = Paginator.page(page)
+        return render(request, 'medialibary/download_mode.html', {'data': data})
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
         ori_name = file_obj.name
@@ -66,49 +76,39 @@ def download_mode(request):
                 BASE_DIR, 'static', 'upload', ("download_mode") + str(time_stamp)
             )
             # 写入到后台
-            with open(file_name, 'wb') as f:
-                for chunk in file_obj.chunks():
-                    f.write(chunk)
-            # 保存信心
-            task_list = MediaLibrary.objects.all().order_by('-id')
-            resu_data = []
-            for tas in task_list:
-                resu_data.append({
-                    'id': tas.id,
-                    'url': tas.url,
-                    'secondpage': tas.secondpage,
-                    'thirdpage': tas.thirdpage,
-                    'xunxun_nickname': tas.xunxun_nickname,
-                    'sousou_nickname': tas.sousou_nickname,
-                    'website': tas.website,
-                    'sitetype': tas.sitetype,
-                    'regional': tas.regional,
-                    'fetchlevel': tas.fetchlevel,
-                    'yesterdaycapture': tas.yesterdaycapture,
-                    'is_author': tas.is_author,
-                    'addtime': tas.addtime.strftime('%Y-%m-%d %H:%M:%S') if tas.addtime else '',
-                    'updatetime': tas.updatetime.strftime('%Y-%m-%d %H:%M:%S') if tas.updatetime else '',
-                    'latestfetchtime': tas.latestfetchtime.strftime('%Y-%m-%d %H:%M:%S') if tas.latestfetchtime else '',
-                    'fetchstatus': tas.fetchstatus,
-                    'is_process': tas.is_process,
-                    'note': tas.note,
-                    'is_xuxu': tas.is_xuxu,
-                    'is_sousou': tas.is_sousou,
-                    'many_choice': tas.many_choice,
-                })
-            MediaLibrary.objects.create(id=tas.id, url=tas.url, secondpage=tas.secondpage, thirdpage=tas.thirdpage, xunxun_nickname=tas.xunxun_nickname,
-                                        sousou_nickname=tas.sousou_nickname, website= tas.website, sitetype=tas.sitetype, regional=tas.regional,
-                                        fetchlevel=tas.fetchlevel, yesterdaycapture=tas.yesterdaycapture, is_author=tas.is_author,
-                                        addtime=tas.addtime, updatetime=tas.updatetime, latestfetchtime=tas.latestfetchtime,
-                                        fetchstatus=tas.fetchstatus, is_process=tas.is_process, note=tas.note, is_xuxu=tas.is_xuxu, is_sousou=tas.is_sousou, many_choice=tas.many_choice)
-            return HttpResponse(json.dumps({'resu_data': resu_data}))
+            reader = csv.reader(file_obj)
+            reader.next()
+            count = 0
+            for parts in reader:
+                MediaLibrary.objects.create(
+                    # id=parts[0].decode('GB2312').encode('utf-8'),
+                    url=parts[1].decode('GB2312').encode('utf-8'),
+                    secondpage=parts[2].decode('GB2312').encode('utf-8'),
+                    thirdpage=parts[3].decode('GB2312').encode('utf-8'),
+                    xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
+                    sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
+                    website=parts[6].decode('GB2312').encode('utf-8'),
+                    sitetype=parts[7].decode('GB2312').encode('utf-8'),
+                    regional=parts[8].decode('GB2312').encode('utf-8'),
+                     fetchlevel=parts[9].decode('GB2312').encode('utf-8'),
+                    yesterdaycapture=parts[10].decode('GB2312').encode('utf-8'),
+                    is_author=parts[11].decode('GB2312').encode('utf-8'), addpaper=parts[12].decode('GB2312').encode('utf-8'),
+                     addtime=parts[13].decode('GB2312').encode('utf-8'), updatetime=parts[14].decode('GB2312').encode('utf-8'),
+                    latestfetchtime=parts[15].decode('GB2312').encode('utf-8'),
+                    fetchstatus=parts[15].decode('GB2312').encode('utf-8'),
+                     is_process=parts[17].decode('GB2312').encode('utf-8'),
+                    note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
+                    is_xuxu=parts[19].decode('GB2312').encode('utf-8'), is_sousou=parts[20].decode('GB2312').encode('utf-8'),
+                    many_choice=parts[21].decode('GB2312').encode('utf-8'))
+                count +=1
+            MediaLibrary.objects.update(count=count)
+        return render(request, 'medialibary/updata_count.html')
 
 
-def thread_get_sourcetype_media(task_dict, time_stamp, file_name):
-    resu_file = os.path.join(
-        BASE_DIR, 'static', 'download', ()
-    )
-
+def show_updata_count(request):
+    if request.method == 'GET':
+       updata_count = MediaLibrary.objects.all()
+    return render(request, 'medialibary/updata_count.html', {'updata_count': updata_count})
 
 def export_emp_excel(request):
     """导出Excel报表"""
@@ -117,13 +117,13 @@ def export_emp_excel(request):
     # 向工作簿中添加工作表
     sheet = workbook.add_sheet(u'models')
     # 设置表头
-    titles = ('ID', '链接', '网站', '二级板面', '三级版面', '讯讯别称', '搜搜别称',  '网站类型', '地域', '抓取等级',
+    titles = ('ID', '链接','二级板面', '三级版面', '讯讯别称', '搜搜别称', '网站', '网站类型', '地域', '抓取等级',
               '昨日抓取量', '是否有作者/互动/原创转载', '添加人', '添加时间', '修改时间', '最新抓取时间', '抓取状态',
-              '作者/互动/原创转载是否处理', '是否应用讯讯', '是否应用搜搜',  '备注')
-    props = ('id', 'url','website', 'secondpage', 'thirdpage', 'xunxun_nickname', 'sousou_nickname',
+              '作者/互动/原创转载是否处理','备注',  '是否应用讯讯', '是否应用搜搜',  '更多')
+    props = ('id', 'url', 'secondpage', 'thirdpage', 'xunxun_nickname', 'sousou_nickname','website',
                  'sitetype', 'regional', 'fetchlevel', 'yesterdaycapture', 'is_author',
-                 'addpaper', 'addtime', 'updatetime', 'latestfetchtime', 'fetchstatus', 'is_process',
-                'is_xuxu', 'is_sousou','note')
+                 'addpaper', 'addtime', 'updatetime', 'latestfetchtime', 'fetchstatus', 'is_process', 'note',
+                'is_xuxu', 'is_sousou','many_choice')
     for col, title in enumerate(titles):
         sheet.write(0, col, title, get_style('Arial', color=2, bold=True))
         medialibrarys = MediaLibrary.objects.all().only(*props).order_by('yesterdaycapture')
@@ -143,8 +143,16 @@ def export_emp_excel(request):
     resp['content-disposition'] = 'attachment; filename="models.csv"'
     return resp
 
-
-
+def show_data(request):
+    if request.method == 'GET':
+        try:
+            page = int(request.GET.get('page', 1))
+        except Exception as e:
+            page = 1
+        data = MediaLibrary.objects.all()
+        paginator = Paginator(data, 5)
+        page_data = paginator.page(page)
+        return render(request, 'medialibary/download_mode.html', {'data': data, 'page_data': page_data})
 
 
 
