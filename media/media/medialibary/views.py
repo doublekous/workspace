@@ -79,30 +79,37 @@ def download_mode(request):
             reader = csv.reader(file_obj)
             reader.next()
             count = 0
+            counts = 0
             for parts in reader:
-                MediaLibrary.objects.create(
-                    # id=parts[0].decode('GB2312').encode('utf-8'),
-                    url=parts[1].decode('GB2312').encode('utf-8'),
-                    secondpage=parts[2].decode('GB2312').encode('utf-8'),
-                    thirdpage=parts[3].decode('GB2312').encode('utf-8'),
-                    xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
-                    sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
-                    website=parts[6].decode('GB2312').encode('utf-8'),
-                    sitetype=parts[7].decode('GB2312').encode('utf-8'),
-                    regional=parts[8].decode('GB2312').encode('utf-8'),
-                     fetchlevel=parts[9].decode('GB2312').encode('utf-8'),
-                    yesterdaycapture=parts[10].decode('GB2312').encode('utf-8'),
-                    is_author=parts[11].decode('GB2312').encode('utf-8'), addpaper=parts[12].decode('GB2312').encode('utf-8'),
-                     addtime=parts[13].decode('GB2312').encode('utf-8'), updatetime=parts[14].decode('GB2312').encode('utf-8'),
-                    latestfetchtime=parts[15].decode('GB2312').encode('utf-8'),
-                    fetchstatus=parts[15].decode('GB2312').encode('utf-8'),
-                     is_process=parts[17].decode('GB2312').encode('utf-8'),
-                    note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
-                    is_xuxu=parts[19].decode('GB2312').encode('utf-8'), is_sousou=parts[20].decode('GB2312').encode('utf-8'),
-                    many_choice=parts[21].decode('GB2312').encode('utf-8'))
-                count +=1
-            MediaLibrary.objects.update(count=count)
-        return render(request, 'medialibary/updata_count.html')
+                try:
+                    MediaLibrary.objects.create(
+                        # id=parts[0].decode('GB2312').encode('utf-8'),
+                        url=parts[1].decode('GB2312').encode('utf-8'),
+                        secondpage=parts[2].decode('GB2312').encode('utf-8'),
+                        thirdpage=parts[3].decode('GB2312').encode('utf-8'),
+                        xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
+                        sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
+                        website=parts[6].decode('GB2312').encode('utf-8'),
+                        sitetype=parts[7].decode('GB2312').encode('utf-8'),
+                        regional=parts[8].decode('GB2312').encode('utf-8'),
+                         fetchlevel=parts[9].decode('GB2312').encode('utf-8'),
+                        yesterdaycapture=parts[10].decode('GB2312').encode('utf-8'),
+                        is_author=parts[11].decode('GB2312').encode('utf-8'), addpaper=parts[12].decode('GB2312').encode('utf-8'),
+                         addtime=parts[13].decode('GB2312').encode('utf-8'), updatetime=parts[14].decode('GB2312').encode('utf-8'),
+                        latestfetchtime=parts[15].decode('GB2312').encode('utf-8'),
+                        fetchstatus=parts[15].decode('GB2312').encode('utf-8'),
+                         is_process=parts[17].decode('GB2312').encode('utf-8'),
+                        note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
+                        is_xuxu=parts[19].decode('GB2312').encode('utf-8'), is_sousou=parts[20].decode('GB2312').encode('utf-8'),
+                        many_choice=parts[21].decode('GB2312').encode('utf-8'))
+                    count += 1
+                    MediaLibrary.objects.update(count=count)
+                    return HttpResponse('插入了%s条数据,重复插入了%s条数据，点击网址刷新页面返回' % (count, counts))
+                except Exception as e:
+                    counts += 1
+        return HttpResponse('亲，这是您刚刚上传过的文件')
+        # return render(request, 'medialibary/updata_count.html')
+
 
 
 def show_updata_count(request):

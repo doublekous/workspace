@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
             name='MediaLibrary',
             fields=[
                 ('id', models.AutoField(serialize=False, primary_key=True)),
-                ('url', models.CharField(max_length=255, null=True, verbose_name=b'\xe9\x93\xbe\xe6\x8e\xa5', blank=True)),
+                ('url', models.CharField(max_length=255, verbose_name=b'\xe9\x93\xbe\xe6\x8e\xa5', blank=True)),
                 ('secondpage', models.CharField(max_length=255, null=True, verbose_name=b'\xe4\xba\x8c\xe7\xba\xa7\xe9\x9d\xa2\xe6\x9d\xbf', blank=True)),
                 ('thirdpage', models.CharField(max_length=255, null=True, verbose_name=b'\xe4\xb8\x89\xe7\xba\xa7\xe9\x9d\xa2\xe6\x9d\xbf', blank=True)),
                 ('xunxun_nickname', models.CharField(max_length=255, null=True, verbose_name=b'\xe8\xae\xaf\xe8\xae\xaf\xe5\x88\xab\xe7\xa7\xb0', blank=True)),
