@@ -12,11 +12,66 @@
     </style>
 {% endblock %}
 {% block content %}
+    <div class="form-group">
+                        <div class="select clearfix">
+                            <label class="w30 ar fl">抓取状态：</label>
+                            <div class="select w50 fr">
+                                <select name="strategy" id="strategy" class="form-control">
+                                    <option value="original">全部</option>
+                                    <option value="delnavi">失败</option>
+                                    <option value="sfsa">完成</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+    <div class="form-group">
+                        <div class="select clearfix">
+                            <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
+                            <div class="select w50 fr">
+                                <select name="strategy" id="strategy" class="form-control">
+                                    <option value="original">无</option>
+                                    <option value="delnavi">有作者</option>
+                                    <option value="sfsa">有互动</option>
+                                    <option value="sfsa">有原创转载</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+     <div class="form-group">
+                        <div class="select clearfix">
+                            <label class="w30 ar fl">抓取等级：</label>
+                            <div class="select w50 fr">
+                                <select name="strategy" id="strategy" class="form-control">
+                                    <option value="original">全部</option>
+                                    <option value="delnavi">高</option>
+                                    <option value="sfsa">中</option>
+                                    <option value="sfsa">低</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
     <div id="vm_data">
-      <br>
-    点击 :<a href="/medialibary/file_down/">下载模板</a>
-    <br>
-        <h1>下载模板，按照模板格式上传文件，ID不用标记</h1>
+     <div class="form-group">
+                        <div class="select clearfix">
+                            <label class="w30 ar fl">链接：</label>
+                            <div class="select w50 fr">
+                                <select name="strategy" id="strategy" class="form-control">
+                                    <option value="original">链接</option>
+                                    <option value="delnavi">网站</option>
+                                    <option value="sfsa">二级版面</option>
+                                    <option value="sfsa">三级版面</option>
+                                    <option value="sfsa">危机APP别称</option>
+                                    <option value="sfsa">搜搜别称</option>
+                                    <option value="sfsa">网站类型</option>
+                                    <option value="sfsa">地域</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+        <h1>划重点：</h1>
+        <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件，是否搜搜和是否讯讯没有用写1，上传成功后刷新网址栏返回页面</h4>
+        <br>
+        点击 :<a href="/medialibary/file_down/">下载模板</a>
         <br>
         <div class="form-group file">
             <form name="update_by_url" id="download_mode" action="/medialibary/download_mode/" method="post"
@@ -30,41 +85,44 @@
         </div>
 
     </div>
-     <div class="row">
-            <div class="panel panel-default">
-                <table class="table table-striped" id="ips-refer" >
+     <div class="row" >
+            <div >
+                <table width="2000"border="1" >
                 <thead>
                     <tr>
-                        <th style="text-align: center" >ID</th>
-                        <th style="text-align: center" >链接</th>
-                        <th style="text-align: center" width="5">二级版面</th>
-                        <th style="text-align: center" width="50">三级版面</th>
-                        <th style="text-align: center">讯讯别称</th>
-                        <th style="text-align: center" width="50">搜搜别称</th>
-                        <th style="text-align: center">网站</th>
-                        <th style="text-align: center" width="50">网站类型</th>
-                        <th style="text-align: center">地域</th>
-                        <th style="text-align: center">抓取等级</th>
-                        <th style="text-align: center">昨日抓取量</th>
+                        <th style="text-align: center"width="50" >ID</th>
+                        <th style="text-align: center" width="100">链接</th>
+                        <th style="text-align: center" width="120">二级版面</th>
+                        <th style="text-align: center" width="120">三级版面</th>
+                        <th style="text-align: center" width="120">讯讯别称</th>
+                        <th style="text-align: center" width="120">搜搜别称</th>
+                        <th style="text-align: center" width="120">网站</th>
+                        <th style="text-align: center" width="120">网站类型</th>
+                        <th style="text-align: center" width="120">地域</th>
+                        <th style="text-align: center" width="120">抓取等级</th>
+                        <th style="text-align: center" width="120">昨日抓取量</th>
                         <th style="text-align: center" width="150">是否有作者/互动/转载</th>
-                        <th style="text-align: center">添加人</th>
-                        <th style="text-align: center">添加时间</th>
-                        <th style="text-align: center">修改时间</th>
-                        <th style="text-align: center">最新抓取时间</th>
-                        <th style="text-align: center">抓取状态</th>
+                        <th style="text-align: center" width="80">添加人</th>
+                        <th style="text-align: center" width="120">添加时间</th>
+                        <th style="text-align: center" width="120">修改时间</th>
+                        <th style="text-align: center" width="120">最新抓取时间</th>
+                        <th style="text-align: center" width="120">抓取状态</th>
                         <th style="text-align: center" width="150">作者/互动/原创是否转载</th>
-                        <th style="text-align: center">备注</th>
-                        <th style="text-align: center">是否应用讯讯</th>
-                        <th style="text-align: center">是否应用搜搜</th>
-                        <th style="text-align: center">更多</th>
-                        <th style="text-align: center" width="140">操作</th>
+                        <th style="text-align: center" width="120">备注</th>
+                        <th style="text-align: center" width="120">是否应用讯讯</th>
+                        <th style="text-align: center" width="120">是否应用搜搜</th>
+                        <th style="text-align: center" width="120">更多</th>
+                        <th style="text-align: center" width="120">是否是静态</th>
+                        <th style="text-align: center" width="160">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                    {% for result in data %}
-                       <tr>
+{#                       <tr v-for="result in data">#}
                        <th style="text-align: center" width="1">{{ result.id }}</th>
-                        <th style="text-align: center" width="20">{{ result.url }}</th>
+                        <th style="text-align: center" width="20">
+                            <a href="{{ result.url }}">
+                            {{ result.url }}</a></th>
                         <th style="text-align: center">{{ result.secondpage }}</th>
                         <th style="text-align: center" width="50">{{ result.thirdpage }}</th>
                         <th style="text-align: center">{{ result.xunxun_nickname }}</th>
@@ -85,12 +143,15 @@
                         <th style="text-align: center">{{ result.is_xuxu }}</th>
                         <th style="text-align: center">{{ result.is_sousou }}</th>
                         <th style="text-align: center">{{ result.many_choice }}</th>
-                        <th style="text-align: center" width="140">操作</th>
+                        <th style="text-align: center">{{ result.is_static }}</th>
+                        <th style="text-align: center" width="140">
+                            <a class="btn btn-primary" :href="'/community/edit_ip?ip_id='+b.id">编辑</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(b.id)">删除</button>
+
+                        </th>
                         </tr>
 
                    {% endfor %}
-                        <a class="btn btn-primary" :href="'/community/edit_ip?ip_id='+b.id">编辑</a>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(b.id)">删除</button>
 
                    </td>
                     </tr>
@@ -122,12 +183,5 @@
             $("#download_mode").submit();
         }
     </script>
-    <aside class="paging">
-            <a>当前{{ page_data.number }}页</a>
-            <a href="{% url 'medialibary:download_mode'%}?page=1">第一页</a>
-            {% for i in page_data.paginator.page_range %}
-            <a href="{% url 'medialibary:download_mode' %}?page={{i}}">{{i}}</a>
-            {% endfor %}
-            <a href="{% url 'medialibary:download_mode'%}?page={{page_data.paginator.num_pages}}">最后一页</a>
-        </aside>
+
 {% endblock %}

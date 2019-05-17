@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import sys
+import traceback
 import dateformatting
 from StringIO import StringIO
 import datetime
@@ -47,11 +48,11 @@ def get_style(name,color=0, bold=False, italic=False):
 
 def file_down(request):
     """下载模板"""
-    path = os.path.join(BASE_DIR, 'static', 'download', 'model2.csv')
+    path = os.path.join(BASE_DIR, 'static', 'download', 'medialibary_model.csv')
     file = open(path, 'rb')
     response = HttpResponse(file)
     response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename="model2.csv"'
+    response['Content-Disposition'] = 'attachment;filename="medialibary_model.csv"'
     return response
 
 
@@ -81,34 +82,35 @@ def download_mode(request):
             count = 0
             counts = 0
             for parts in reader:
-                try:
-                    MediaLibrary.objects.create(
-                        # id=parts[0].decode('GB2312').encode('utf-8'),
-                        url=parts[1].decode('GB2312').encode('utf-8'),
-                        secondpage=parts[2].decode('GB2312').encode('utf-8'),
-                        thirdpage=parts[3].decode('GB2312').encode('utf-8'),
-                        xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
-                        sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
-                        website=parts[6].decode('GB2312').encode('utf-8'),
-                        sitetype=parts[7].decode('GB2312').encode('utf-8'),
-                        regional=parts[8].decode('GB2312').encode('utf-8'),
-                         fetchlevel=parts[9].decode('GB2312').encode('utf-8'),
-                        yesterdaycapture=parts[10].decode('GB2312').encode('utf-8'),
-                        is_author=parts[11].decode('GB2312').encode('utf-8'), addpaper=parts[12].decode('GB2312').encode('utf-8'),
-                         addtime=parts[13].decode('GB2312').encode('utf-8'), updatetime=parts[14].decode('GB2312').encode('utf-8'),
-                        latestfetchtime=parts[15].decode('GB2312').encode('utf-8'),
-                        fetchstatus=parts[15].decode('GB2312').encode('utf-8'),
-                         is_process=parts[17].decode('GB2312').encode('utf-8'),
-                        note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
-                        is_xuxu=parts[19].decode('GB2312').encode('utf-8'), is_sousou=parts[20].decode('GB2312').encode('utf-8'),
-                        many_choice=parts[21].decode('GB2312').encode('utf-8'))
-                    count += 1
-                    MediaLibrary.objects.update(count=count)
-                    return HttpResponse('插入了%s条数据,重复插入了%s条数据，点击网址刷新页面返回' % (count, counts))
-                except Exception as e:
-                    counts += 1
-        return HttpResponse('亲，这是您刚刚上传过的文件')
-        # return render(request, 'medialibary/updata_count.html')
+                print parts[21].decode('GB2312').encode('utf-8')
+                print type(parts[21].decode('GB2312').encode('utf-8'))
+                MediaLibrary.objects.create(
+                    # id=parts[0].decode('GB2312').encode('utf-8'),
+                    url=parts[1].decode('GB2312').encode('utf-8'),
+                    secondpage=parts[2].decode('GB2312').encode('utf-8'),
+                    thirdpage=parts[3].decode('GB2312').encode('utf-8'),
+                    xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
+                    sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
+                    website=parts[6].decode('GB2312').encode('utf-8'),
+                    sitetype=parts[7].decode('GB2312').encode('utf-8'),
+                    regional=parts[8].decode('GB2312').encode('utf-8'),
+                     fetchlevel= int(parts[9].decode('GB2312').encode('utf-8')) if parts[9].decode('GB2312').encode('utf-8') else None,
+                    yesterdaycapture= int(parts[10].decode('GB2312').encode('utf-8')) if parts[10].decode('GB2312').encode('utf-8') else None,
+                    is_author=int(parts[11].decode('GB2312').encode('utf-8')) if parts[11].decode('GB2312').encode('utf-8') else None,
+                    addpaper=parts[12].decode('GB2312').encode('utf-8'),
+                     addtime=parts[13].decode('GB2312').encode('utf-8'), updatetime=parts[14].decode('GB2312').encode('utf-8'),
+                    latestfetchtime=parts[15].decode('GB2312').encode('utf-8'),
+                    fetchstatus=int(parts[16].decode('GB2312').encode('utf-8')) if parts[16].decode('GB2312').encode('utf-8') else None,
+                     is_process=int(parts[17].decode('GB2312').encode('utf-8')) if parts[17].decode('GB2312').encode('utf-8') else None,
+                    note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
+                    is_xuxu=int(parts[19].decode('GB2312').encode('utf-8')) if parts[19].decode('GB2312').encode('utf-8') else None,
+                    is_sousou=int(parts[20].decode('GB2312').encode('utf-8')) if parts[20].decode('GB2312').encode('utf-8') else None,
+                    many_choice=int(parts[21].decode('GB2312').encode('utf-8')) if parts[21].decode('GB2312').encode('utf-8') else None,
+                    is_static = int(parts[22].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else None
+                )
+                count += 1
+                MediaLibrary.objects.update(count=count)
+                return HttpResponse('插入了%s条数据,重复插入了%s条数据，点击网址刷新页面返回' % (count, counts))
 
 
 
@@ -126,11 +128,11 @@ def export_emp_excel(request):
     # 设置表头
     titles = ('ID', '链接','二级板面', '三级版面', '讯讯别称', '搜搜别称', '网站', '网站类型', '地域', '抓取等级',
               '昨日抓取量', '是否有作者/互动/原创转载', '添加人', '添加时间', '修改时间', '最新抓取时间', '抓取状态',
-              '作者/互动/原创转载是否处理','备注',  '是否应用讯讯', '是否应用搜搜',  '更多')
+              '作者/互动/原创转载是否处理','备注',  '是否应用讯讯', '是否应用搜搜',  '更多', '是否静态')
     props = ('id', 'url', 'secondpage', 'thirdpage', 'xunxun_nickname', 'sousou_nickname','website',
                  'sitetype', 'regional', 'fetchlevel', 'yesterdaycapture', 'is_author',
                  'addpaper', 'addtime', 'updatetime', 'latestfetchtime', 'fetchstatus', 'is_process', 'note',
-                'is_xuxu', 'is_sousou','many_choice')
+                'is_xuxu', 'is_sousou','many_choice', 'is_static')
     for col, title in enumerate(titles):
         sheet.write(0, col, title, get_style('Arial', color=2, bold=True))
         medialibrarys = MediaLibrary.objects.all().only(*props).order_by('yesterdaycapture')
@@ -160,13 +162,3 @@ def show_data(request):
         paginator = Paginator(data, 5)
         page_data = paginator.page(page)
         return render(request, 'medialibary/download_mode.html', {'data': data, 'page_data': page_data})
-
-
-
-
-
-
-
-
-
-
