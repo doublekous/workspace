@@ -16,10 +16,10 @@
                         <div class="select clearfix">
                             <label class="w30 ar fl">抓取状态：</label>
                             <div class="select w50 fr">
-                                <select name="strategy" id="strategy" class="form-control">
-                                    <option value="original">全部</option>
-                                    <option value="delnavi">失败</option>
-                                    <option value="sfsa">完成</option>
+                                <select name="fetchstatus" id="fetchstatus" class="form-control">
+                                    <option value="1">全部</option>
+                                    <option value="2">失败</option>
+                                    <option value="3">完成</option>
                                 </select>
                             </div>
                         </div>
@@ -28,46 +28,85 @@
                         <div class="select clearfix">
                             <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
                             <div class="select w50 fr">
-                                <select name="strategy" id="strategy" class="form-control">
-                                    <option value="original">无</option>
-                                    <option value="delnavi">有作者</option>
-                                    <option value="sfsa">有互动</option>
-                                    <option value="sfsa">有原创转载</option>
+                                <select name="is_auther" id="is_auther" class="form-control">
+                                    <option value="1">无</option>
+                                    <option value="2">有作者</option>
+                                    <option value="3">有互动</option>
+                                    <option value=4">有原创转载</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-     <div class="form-group">
+
+    <div class="form-group">
                         <div class="select clearfix">
                             <label class="w30 ar fl">抓取等级：</label>
                             <div class="select w50 fr">
-                                <select name="strategy" id="strategy" class="form-control">
-                                    <option value="original">全部</option>
-                                    <option value="delnavi">高</option>
-                                    <option value="sfsa">中</option>
-                                    <option value="sfsa">低</option>
+                                <select name="fetchlevel" id="fetchlevel" class="form-control">
+                                    <option value="1">全部</option>
+                                    <option value="2">高</option>
+                                    <option value="3">中</option>
+                                    <option value="4">低</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-    <div id="vm_data">
-     <div class="form-group">
+
+    <div class="form-group">
+                    <div class="select clearfix">
+                        <label class="w30 ar fl">链接：</label>
+                        <div class="select w50 fr">
+                            <select name="url" id="url" class="form-control">
+                                <option value="1">链接</option>
+                                <option value="2">网站</option>
+                                <option value="3">二级版面</option>
+                                <option value="4">三级版面</option>
+                                <option value="5">危机APP别称</option>
+                                <option value="6">搜搜别称</option>
+                                <option value="7">网站类型</option>
+                                <option value="8">地域</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+    <div class="form-group">
                         <div class="select clearfix">
-                            <label class="w30 ar fl">链接：</label>
+                            <label class="w30 ar fl">是否是否静态：</label>
                             <div class="select w50 fr">
-                                <select name="strategy" id="strategy" class="form-control">
-                                    <option value="original">链接</option>
-                                    <option value="delnavi">网站</option>
-                                    <option value="sfsa">二级版面</option>
-                                    <option value="sfsa">三级版面</option>
-                                    <option value="sfsa">危机APP别称</option>
-                                    <option value="sfsa">搜搜别称</option>
-                                    <option value="sfsa">网站类型</option>
-                                    <option value="sfsa">地域</option>
+                                <select name="is_static" id="is_static" class="form-control">
+                                    <option value="1">是静态</option>
+                                    <option value="2">是动态</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+
+    <div class="form-group">
+                <div class="select clearfix">
+                    <label class="w30 ar fl">是否应用讯讯：</label>
+                    <div class="select w50 fr">
+                        <select name="is_xunxun" id="is_xunxun" class="form-control">
+                            <option value="original">是</option>
+                            <option value="delnavi">否</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+    <div class="form-group">
+            <div class="select clearfix">
+                <label class="w30 ar fl">是否应用搜搜：</label>
+                <div class="select w50 fr">
+                    <select name="is_sousou" id="is_sousou" class="form-control">
+                        <option value="original">是</option>
+                        <option value="delnavi">否</option>
+                    </select>
+                </div>
+            </div>
+        <button type="button" class="btn btn-primary" onclick="startFeedback()">搜索</button>
+
+
+
+
         <h1>划重点：</h1>
         <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件，是否搜搜和是否讯讯没有用写1，上传成功后刷新网址栏返回页面</h4>
         <br>
@@ -118,8 +157,9 @@
                 </thead>
                 <tbody>
                    {% for result in data %}
+
 {#                       <tr v-for="result in data">#}
-                       <th style="text-align: center" width="1">{{ result.id }}</th>
+                       <th style="text-align: center" width="1">{{ resul.id }}</th>
                         <th style="text-align: center" width="20">
                             <a href="{{ result.url }}">
                             {{ result.url }}</a></th>
