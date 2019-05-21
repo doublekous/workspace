@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.views.decorators.csrf import csrf_protect
 
+
 defaultencoding = 'utf-8'
 if sys.getdefaultencoding() != defaultencoding:
     reload(sys)
@@ -60,80 +61,8 @@ def file_down(request):
 def download_mode(request):
     """导入csv到数据库"""
     if request.method == 'GET':
-        # filters = MediaLibrary.objects.all().order_by('-id')
-        filters = MediaLibrary.objects.filter(is_author=3).all().order_by('-id')
-        filters_list = []
-        temp_fetchstatus = ''
-        temp_is_author = ''
-        temp_fetchlevel = ''
-        temp_url = ''
-        temp_is_static = ''
-        temp_is_xuxu = ''
-        temp_is_sousou = ''
-        for f in filters:
-            if f.fetchstatus == 1:
-                temp_fetchstatus = '全部'
-            elif f.fetchstatus == 2:
-                temp_fetchstatus = '失败'
-            elif f.fetchstatus == 3:
-                temp_fetchstatus = '完成'
-            filters_list.append(temp_fetchstatus)
-            if f.is_author == 1:
-                temp_is_author = '无'
-            elif f.is_author == 2:
-                temp_is_author = '有作者'
-            elif f.is_author == 3:
-                temp_is_author = '有互动'
-            elif f.is_author == 4:
-                temp_is_author = '有原创转载'
-            filters_list.append(temp_is_author)
-            if f.fetchlevel == 1:
-                temp_fetchlevel = '全部'
-            elif f.fetchlevel == 2:
-                temp_fetchlevel = '高'
-            elif f.fetchlevel == 3:
-                temp_fetchlevel = '中'
-            elif f.fetchlevel == 4:
-                temp_fetchlevel = '低'
-            filters_list.append(temp_fetchlevel)
-            if f.many_choice == 1:
-                temp_url = '链接'
-            elif f.many_choice == 2:
-                temp_url = '网站'
-            elif f.many_choice == 3:
-                temp_url = '二级版面'
-            elif f.many_choice == 4:
-                temp_url = '三级版面'
-            elif f.many_choice == 5:
-                temp_url = '危机APP别称'
-            elif f.many_choice == 6:
-                temp_url = '搜搜别称'
-            elif f.many_choice == 7:
-                temp_url = '网站类型'
-            elif f.many_choice == 8:
-                temp_url = '地域'
-            filters_list.append(temp_url)
-            if f.is_static == 1:
-                temp_is_static = '是静态'
-            elif f.is_static == 2:
-                temp_is_static = '是动态'
-            filters_list.append(temp_is_static)
-            if f.is_xuxu == 1:
-                temp_is_xuxu = '全部'
-            elif f.is_xuxu == 2:
-                temp_is_xuxu = '是'
-            elif f.is_xuxu == 3:
-                temp_is_xuxu = '否'
-            filters_list.append(temp_is_xuxu)
-            if f.is_sousou == 1:
-                temp_is_sousou = '全部'
-            elif f.is_sousou == 2:
-                temp_is_sousou = '是'
-            elif f.is_sousou == 3:
-                temp_is_sousou = '否'
-            filters_list.append(temp_is_sousou)
-            print(filters_list)
-        return render(request, 'medialibary/download_mode.html', {'data': filters})
+        filters = MediaLibrary.objects.filter(fetchstatus=1, fetchlevel=2).order_by('-id')
+        return render(request, 'medialibary/download_mode.html',{'data': filters})
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
         ori_name = file_obj.name
@@ -151,32 +80,6 @@ def download_mode(request):
             for parts in reader:
                 print parts[21].decode('GB2312').encode('utf-8')
                 print type(parts[21].decode('GB2312').encode('utf-8'))
-                url = MediaLibrary.objects.all().first()
-                if url.url == parts[1].decode('GB2312').encode('utf-8'):
-                    MediaLibrary.objects.update( secondpage=parts[2].decode('GB2312').encode('utf-8'),
-                    thirdpage=parts[3].decode('GB2312').encode('utf-8'),
-                    xunxun_nickname=parts[4].decode('GB2312').encode('utf-8'),
-                    sousou_nickname=parts[5].decode('GB2312').encode('utf-8'),
-                    website=parts[6].decode('GB2312').encode('utf-8'),
-                    sitetype=parts[7].decode('GB2312').encode('utf-8'),
-                    regional=parts[8].decode('GB2312').encode('utf-8'),
-                     fetchlevel= int(parts[9].decode('GB2312').encode('utf-8')) if parts[9].decode('GB2312').encode('utf-8') else 2,
-                    yesterdaycapture= int(parts[10].decode('GB2312').encode('utf-8')) if parts[10].decode('GB2312').encode('utf-8') else None,
-                    is_author=int(parts[11].decode('GB2312').encode('utf-8')) if parts[11].decode('GB2312').encode('utf-8') else None,
-                    addpaper=parts[12].decode('GB2312').encode('utf-8'),
-                     addtime=parts[13].decode('GB2312').encode('utf-8') if parts[13].decode('GB2312').encode('utf-8') else None,
-                    updatetime=parts[14].decode('GB2312').encode('utf-8') if parts[14].decode('GB2312').encode('utf-8') else None,
-                    latestfetchtime=parts[15].decode('GB2312').encode('utf-8') if parts[15].decode('GB2312').encode('utf-8') else None,
-                    fetchstatus=int(parts[16].decode('GB2312').encode('utf-8')) if parts[16].decode('GB2312').encode('utf-8') else 1,
-                     is_process=int(parts[17].decode('GB2312').encode('utf-8')) if parts[17].decode('GB2312').encode('utf-8') else 4,
-                    note=parts[18].decode('GB2312').encode('utf-8').decode('GB2312').encode('utf-8'),
-                    is_xuxu=int(parts[19].decode('GB2312').encode('utf-8')) if parts[19].decode('GB2312').encode('utf-8') else 3,
-                    is_sousou=int(parts[20].decode('GB2312').encode('utf-8')) if parts[20].decode('GB2312').encode('utf-8') else 3,
-                    many_choice=int(parts[21].decode('GB2312').encode('utf-8')) if parts[21].decode('GB2312').encode('utf-8') else None,
-                    is_static = int(parts[22].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 1,
-                    is_del = int(parts[23].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 0,)
-                    # return HttpResponse('修改了%s条数据' % counts2)
-                    counts2 += 1
                 try:
                     MediaLibrary.objects.create(
                         # id=parts[0].decode('GB2312').encode('utf-8'),
@@ -201,21 +104,21 @@ def download_mode(request):
                         is_sousou=int(parts[20].decode('GB2312').encode('utf-8')) if parts[20].decode('GB2312').encode('utf-8') else 3,
                         many_choice=int(parts[21].decode('GB2312').encode('utf-8')) if parts[21].decode('GB2312').encode('utf-8') else None,
                         is_static = int(parts[22].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 1,
-                        is_del = int(parts[23].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 0,
+                        # is_del = int(parts[23].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 0,
                     )
                     count += 1
-                    MediaLibrary.objects.update(count=count)
+                    MediaLibrary.objects.update(count=count,is_del=0)
                 except Exception as e:
                     counts += 1
             return HttpResponse('插入了%s条数据,修改了%s条数据，点击网址刷新页面返回' % (count, counts2))
         return HttpResponse('插入数据格式有误，请检查')
 
 
-
 def show_updata_count(request):
     if request.method == 'GET':
        updata_count = MediaLibrary.objects.all()
     return render(request, 'medialibary/updata_count.html', {'updata_count': updata_count})
+
 
 def export_emp_excel(request):
     """导出Excel报表"""
@@ -250,6 +153,7 @@ def export_emp_excel(request):
     resp['content-disposition'] = 'attachment; filename="models.csv"'
     return resp
 
+@csrf_protect
 def show_data(request):
     if request.method == 'GET':
         try:
@@ -269,76 +173,29 @@ def show_data(request):
         is_static = request.POST.get('is_static')
         is_xuxu = request.POST.get('is_xunxun')
         is_sousou = request.POST.get('is_sousou')
-        filters = MediaLibrary.objects.all().order_by('-id')
-        filters_list = []
-        temp_fetchstatus = ''
-        temp_is_auther = ''
-        temp_fetchlevel = ''
-        temp_url = ''
-        temp_is_static = ''
-        temp_is_xuxu = ''
-        temp_is_sousou = ''
-        for f in filters:
-            if f.fetchstatus == 1:
-                temp_fetchstatus = '全部'
-            elif f.fetchstatus == 2:
-                temp_fetchstatus = '失败'
-            elif f.fetchstatus == 3:
-                temp_fetchstatus = '完成'
-            filters_list.append(temp_fetchstatus)
-            if f.is_auther == 1:
-                temp_is_auther = '无'
-            elif f.is_auther == 2:
-                temp_is_auther = '有作者'
-            elif f.is_auther == 3:
-                temp_is_auther = '有互动'
-            elif f.is_auther == 4:
-                temp_is_auther = '有原创转载'
-            filters_list.append(temp_is_auther)
-            if f.fetchlevel == 1:
-                temp_fetchlevel = '全部'
-            elif f.fetchlevel == 2:
-                temp_fetchlevel = '高'
-            elif f.fetchlevel == 3:
-                temp_fetchlevel = '中'
-            elif f.fetchlevel == 4:
-                temp_fetchlevel = '低'
-            filters_list.append(temp_fetchlevel)
-            if f.many_choice == 1:
-                temp_url = '链接'
-            elif f.many_choice == 2:
-                temp_url = '网站'
-            elif f.many_choice == 3:
-                temp_url = '二级版面'
-            elif f.many_choice == 4:
-                temp_url = '三级版面'
-            elif f.many_choice == 5:
-                temp_url = '危机APP别称'
-            elif f.many_choice == 6:
-                temp_url = '搜搜别称'
-            elif f.many_choice == 7:
-                temp_url = '网站类型'
-            elif f.many_choice == 8:
-                temp_url = '地域'
-            filters_list.append(temp_url)
-            if f.is_static == 1:
-                temp_is_static = '是静态'
-            elif f.is_static == 2:
-                temp_is_static = '是动态'
-            filters_list.append(temp_is_static)
-            if f.is_xunxun == 1:
-                temp_is_xunxun = '全部'
-            elif f.is_xunxun == 2:
-                temp_is_xunxun = '是'
-            elif f.is_xunxun == 3:
-                temp_is_xunxun = '否'
-            filters_list.append(temp_is_xunxun)
-            if f.is_sousou == 1:
-                temp_is_sousou = '全部'
-            elif f.is_sousou == 2:
-                temp_is_sousou = '是'
-            elif f.is_sousou == 3:
-                temp_is_sousou = '否'
-            filters_list.append(temp_is_sousou)
-        print(fetchstatus)
+        data = MediaLibrary.objects.filter(fetchstatus=fetchstatus).order_by('-id')
+        if data:
+            seconddata = data.filter(is_author=is_auther).order_by('-id')
+        else:
+            error = '请输入筛选内容'
+            return render(request, 'medialibary')
+        thirddata = seconddata.filter(fetchlevel=fetchlevel).order_by('-id')
+        if thirddata:
+            fourdata = thirddata.filter(is_static=is_static).order_by('-id')
+    return HttpResponse('ok')
 
+
+
+
+
+
+def detail_data(request, id):
+    if request.method == 'GET':
+        return render(request, 'medialibary/detail_data.html')
+#     if request.method == 'POST':
+#         id = MediaLibrary.objects.filter(pk=id).first()
+#         form = MedialibaryForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             data = form.cleaned_data
+#             MediaLibrary.objects.filter(pk=id).update(**data)
+#             return HttpResponse('跟新成功')

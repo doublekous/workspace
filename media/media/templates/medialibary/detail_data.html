@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block css %}
+    <style>
+        .txt {
+            width: 400px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            display: inline-block;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+            <section>
+                <ul class="ulColumn2">
+                    <li>
+                        <span class="item_name" style="width:120px;">url：</span>
+                        <input type="text" name="url" value="" class="textbox textbox_295" placeholder="url..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">二级版面：</span>
+                        <input type="text" name="secondpage" value=""  class="textbox" placeholder="二级版面..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">三级版面：</span>
+                        <input type="text" name="thirdpage" value=""  class="textbox textbox_295" placeholder="三级版面..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">迅迅别称：</span>
+                        <input type="text" name="xunxun_nickname" value="" class="textbox textbox_295" placeholder="迅迅别称..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">搜搜别称：</span>
+                        <input type="text" name="sousou_nickname" value="" class="textbox textbox_295" placeholder="搜搜别称..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">网站：</span>
+                        <input type="text" name="website" value="" class="textbox textbox_295" placeholder="网站..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">网站类型：</span>
+                        <input type="text" name="sitetype" value="" class="textbox textbox_295" placeholder="网站类型..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">地域：</span>
+                        <input type="text" name="regional" value="" class="textbox textbox_295" placeholder="地域..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">抓取等级：</span>
+                        <input type="text" name="fetchlevel" value="" class="textbox textbox_295" placeholder="抓取等级..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">昨日抓取量：</span>
+                        <input type="text" name="yesterdaycapture" value="" class="textbox textbox_295" placeholder="昨日抓取量..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">是否有作者互动/转载：</span>
+                        <input type="text" name="is_author" value="" class="textbox textbox_295" placeholder="是否有作者互动/转载..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">添加人：</span>
+                        <input type="text" name="addpaper" value="" class="textbox textbox_295" placeholder="添加人..."/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">抓取状态：</span>
+                        <input type="text" name="fetchstatus" value="" class="textbox textbox_295" placeholder="抓取状态..."/>
+
+                    </li>
+                     <li>
+
+                        <label for="meeting">最新抓取时间：</label><input id="meeting" type="datetime-local" name="latestfetchtime" value="2019-05-21"/>
+
+                    </li>
+                     <li>
+                        <span class="item_name" style="width:120px;">抓取状态：</span>
+                        <input type="text" name="fetchstatus" value="" class="textbox textbox_295" placeholder="抓取状态..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">作者/互动/原创是否转载：</span>
+                        <input type="text" name="is_process" value="" class="textbox textbox_295" placeholder="作者/互动/原创是否转载..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">备注：</span>
+                        <input type="text" name="note" value="" class="textbox textbox_295" placeholder="备注..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否应用迅迅：</span>
+                        <input type="text" name="is_xuxu" value="" class="textbox textbox_295" placeholder="是否应用迅迅..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否应用搜搜：</span>
+                        <input type="text" name="is_sousou" value="" class="textbox textbox_295" placeholder="是否应用搜搜..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">更多：</span>
+                        <input type="text" name="manu_choice" value="" class="textbox textbox_295" placeholder="更多..."/>
+
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否静态：</span>
+                        <input type="text" name="is_static" value="" class="textbox textbox_295" placeholder="是否静态..."/>
+
+                    </li>
+
+
+                    <!--<li>-->
+                        <!--<span class="item_name" style="width:120px;">产品详情：</span>-->
+
+                        <!--<textarea id="editor_id" name="content" style="width:700px;height:300px;">-->
+                            <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
+                        <!--</textarea>-->
+                    <!--</li>-->
+                    <li>
+                        <span class="item_name" style="width:120px;"></span>
+                        <input type="submit" class="link_btn"/>
+                    </li>
+                </ul>
+            </section>
+        </form>
+
+{% endblock %}

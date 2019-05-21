@@ -86,8 +86,8 @@
                     <label class="w30 ar fl">是否应用讯讯：</label>
                     <div class="select w50 fr">
                         <select name="is_xunxun" id="is_xunxun" class="form-control">
-                            <option value="original">是</option>
-                            <option value="delnavi">否</option>
+                            <option value="1">是</option>
+                            <option value="0">否</option>
                         </select>
                     </div>
                 </div>
@@ -97,12 +97,20 @@
                 <label class="w30 ar fl">是否应用搜搜：</label>
                 <div class="select w50 fr">
                     <select name="is_sousou" id="is_sousou" class="form-control">
-                        <option value="original">是</option>
-                        <option value="delnavi">否</option>
+                        <option value="1">是</option>
+                        <option value="0">否</option>
                     </select>
                 </div>
             </div>
-        <button type="button" class="btn btn-primary" onclick="startFeedback()">搜索</button>
+        <button type="button" class="btn btn-primary" id="post_search" onclick="startGetPostInfo()" >搜索</button>
+        <div id="fill_data">
+        <div class="loading" style="display:none">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div></div>
+
+    </div>
 
 
 
@@ -185,7 +193,7 @@
                         <th style="text-align: center">{{ result.many_choice }}</th>
                         <th style="text-align: center">{{ result.is_static }}</th>
                         <th style="text-align: center" width="140">
-                            <a class="btn btn-primary" :href="'/community/edit_ip?ip_id='+b.id">编辑</a>
+                            <a class="btn btn-primary" href="{% url 'medialibary:detail_data' %}">编辑</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(b.id)">删除</button>
 
                         </th>
@@ -222,6 +230,94 @@
             }
             $("#download_mode").submit();
         }
+    </script>
+    <script>
+        function startGetPostInfo() {
+            if($("#fetchstatus").val().trim() === ''){
+                alert('请选择抓取状态');
+                return false;
+            }
+            if($("#is_auther").val().trim() === ''){
+                alert('请选择是否处理');
+                return false;
+            }
+            if($("#fetchlevel").val().trim() === ''){
+                alert('请选择抓取等级');
+                return false;
+            }
+            if($("#url").val().trim() === ''){
+                alert('请选择url');
+                return false;
+            }
+            if($("#is_static").val().trim() === ''){
+                alert('请选择是否为静态');
+                return false;
+            }
+            if($("#is_xunxun").val().trim() === ''){
+                alert('请选择是否为迅迅');
+                return false;
+            }
+            if($("#is_sousou").val().trim() === ''){
+                alert('请选择是否应用的搜搜');
+                return false;
+            }
+
+            var args_data = {
+                "fetchstatus": $("#fetchstatus").val().trim(),
+                "is_auther": $("#is_auther").val().trim(),
+                "fetchlevel": $("#fetchlevel").val().trim(),
+                "url": $("#url").val().trim(),
+                "is_static": $("#is_static").val().trim(),
+                "is_xunxun": $("#is_xunxun").val().trim(),
+                "is_sousou": $("#is_sousou").val().trim(),
+            };
+            $.ajax({
+                type: 'post',
+                data: args_data,
+                url: "/medialibary/show_data/",
+{#                cache: false,#}
+                success: function (data) {
+                    if (data === 'ok') {
+                        alert("搜索成功！");
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (error) {
+                    alert("提交失败");
+                }
+            });
+
+        }
+        function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+	var csrftoken = getCookie('csrftoken');
+	if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
     </script>
 
 {% endblock %}
