@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.views.decorators.csrf import csrf_protect
 
+from utils.common import Pagenate
 
 defaultencoding = 'utf-8'
 if sys.getdefaultencoding() != defaultencoding:
@@ -29,7 +30,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, render_to_response
+from django.shortcuts import render, render_to_response, redirect
 
 from media.settings import BASE_DIR
 from medialibary.models import MediaLibrary
@@ -61,8 +62,13 @@ def file_down(request):
 def download_mode(request):
     """导入csv到数据库"""
     if request.method == 'GET':
-        filters = MediaLibrary.objects.filter(fetchstatus=1, fetchlevel=2).order_by('-id')
-        return render(request, 'medialibary/download_mode.html',{'data': filters})
+        page = int(request.POST.get('page', '1'))
+        page_n = 10 * (page - 1)
+        page_m = 10 * page
+        data_count = MediaLibrary.objects.all().count()
+        brands = MediaLibrary.objects.filter(fetchstatus=1, is_author=34, fetchlevel=2, is_static=1, is_xuxu=3, is_sousou=3, is_del=1).order_by('-id')[page_n:page_m]
+        brand_page = Pagenate(page, range(0, data_count), 10).json_result()
+        return render(request, 'medialibary/download_mode.html', {'brands': brands, 'brand_page': brand_page})
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
         ori_name = file_obj.name
@@ -156,46 +162,109 @@ def export_emp_excel(request):
 @csrf_protect
 def show_data(request):
     if request.method == 'GET':
-        try:
-            page = int(request.GET.get('page', 1))
-        except Exception as e:
-            page = 1
-        # data = MediaLibrary.objects.all()
-        filters = MediaLibrary.objects.all().order_by('-id')
-        # paginator = Paginator(data, 5)
-        # page_data = paginator.page(page)
-        return render(request, 'medialibary/download_mode.html', {'data': filters})
+        return render(request, 'medialibary/download_mode.html')
     if request.method == 'POST':
+        page = int(request.POST.get('page', '1'))
         fetchstatus = request.POST.get('fetchstatus')
         is_auther = request.POST.get('is_auther')
         fetchlevel = request.POST.get('fetchlevel')
         url = request.POST.get('url')
         is_static = request.POST.get('is_static')
-        is_xuxu = request.POST.get('is_xunxun')
+        is_xunxun = request.POST.get('is_xunxun')
         is_sousou = request.POST.get('is_sousou')
+        page_n = 10 * (page - 1)
+        page_m = 10 * page
         data = MediaLibrary.objects.filter(fetchstatus=fetchstatus).order_by('-id')
         if data:
             seconddata = data.filter(is_author=is_auther).order_by('-id')
         else:
             error = '请输入筛选内容'
-            return render(request, 'medialibary')
-        thirddata = seconddata.filter(fetchlevel=fetchlevel).order_by('-id')
+            return render(request, 'medialibary/download_mode.html', {'error': error})
+        if seconddata:
+            thirddata = seconddata.filter(fetchlevel=fetchlevel).order_by('-id')
+        else:
+            error = '没有符合要求的作者状态'
+            return render(request, 'medialibary/download_mode.html', {'error': error})
         if thirddata:
             fourdata = thirddata.filter(is_static=is_static).order_by('-id')
-    return HttpResponse('ok')
+        else:
+            error = '抓取等级没有符合要求的数据'
+            return render(request, 'medialibary/download_mode.html', {'error': error})
+        if fourdata:
+            sixdata = fourdata.filter(is_xuxu=is_xunxun).order_by('-id')
+        else:
+            error = '是否静态在数据库没有符合状态的数据'
+            return render(request, 'medialibary/download_mode.html', {'error': error})
+        if sixdata:
+            sevendata_count = sixdata.filter(is_sousou=is_sousou).count()
+            brands = sixdata.filter(is_sousou=is_sousou).order_by('-id')[page_n:page_m]
+        else:
+            error = '搜索的是否应用迅迅数据库没有对应的返回值'
+            return render(request, 'medialibary/download_mode.html', {'error': error})
+        page_items = Pagenate(page, range(0, sevendata_count), 10).json_result()
+        print(type(brands))
+        print(brands)
+        # return HttpResponse({'code': 200, 'data': brands, 'page_items': page_items})
+        # return render(request, 'medialibary/download_mode.html', {'data': brands, 'page_items': page_items})
+        return redirect(reverse('medialibary:show_data'))
 
 
-
-
-
-
-def detail_data(request, id):
+def edit_brand(request):
     if request.method == 'GET':
-        return render(request, 'medialibary/detail_data.html')
-#     if request.method == 'POST':
-#         id = MediaLibrary.objects.filter(pk=id).first()
-#         form = MedialibaryForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             data = form.cleaned_data
-#             MediaLibrary.objects.filter(pk=id).update(**data)
-#             return HttpResponse('跟新成功')
+
+        brand = MediaLibrary.objects.all()
+        return render(request, 'medialibary/edit_brand.html', locals())
+    if request.method == 'POST':
+        url = request.POST.get('url')
+        secondpage = request.POST.get('secondpage', '')
+        thirdpage = request.POST.get('thirdpage', '')
+        xunxun_nickname = request.POST.get('xunxun_nickname', '')
+        sousou_nickname = request.POST.get('sousou_nickname', '')
+        website = request.POST.get('website', '')
+        sitetype = request.POST.get('sitetype', '')
+        regional = request.POST.get('regional', '')
+        fetchlevel = request.POST.get('fetchlevel', '')
+        yesterdaycapture = request.POST.get('yesterdaycapture', '')
+        is_author = request.POST.get('is_author', '')
+        addpaper = request.POST.get('addpaper', '')
+        fetchstatus = request.POST.get('fetchstatus', '')
+        is_process = request.POST.get('is_process', '')
+        note = request.POST.get('note', '')
+        is_xuxu = request.POST.get('is_xuxu', '')
+        is_sousou = request.POST.get('is_sousou', '')
+        many_choice = request.POST.get('many_choice', '')
+        is_static = request.POST.get('is_static', '')
+        pass
+        try:
+            # 跟新数据库数据
+            MediaLibrary.objects.filter(url=url).update(
+                url=url,
+                secondpage=secondpage,
+                thirdpage=thirdpage,
+                xunxun_nickname=xunxun_nickname,
+                sousou_nickname=sousou_nickname,
+                website=website,
+                sitetype=sitetype,
+                regional=regional,
+                fetchlevel=fetchlevel,
+                yesterdaycapture=yesterdaycapture,
+                is_author=is_author,
+                addpaper=addpaper,
+                fetchstatus=fetchstatus,
+                is_process=is_process,
+                note=note,
+                is_xuxu=is_xuxu,
+                is_sousou=is_sousou,
+                many_choice=many_choice,
+                is_static=is_static
+            )
+            return HttpResponse('ok')
+        except Exception as e:
+            return HttpResponse(e)
+
+
+def del_medialibary(request):
+    if request.method == 'POST':
+        id = int(request.POST.get('id'))
+        delmedialibary = MediaLibrary.objects.filter(id=id).update(is_del=1)
+        return HttpResponse({'code': 200, 'del_medialibary': delmedialibary})

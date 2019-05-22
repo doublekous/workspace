@@ -19,14 +19,15 @@ class MediaLibrary(models.Model):
         (1, '无'),
         (2, '有作者'),
         (3, '有互动'),
-        (4, '有原创转载'),
+        (4, '有原创'),
+        (4, '有转载'),
 
     )
     is_author = models.IntegerField(verbose_name="是否有作者/互动/原创",choices=author_mode,blank=True, null=True)
     addpaper = models.CharField(verbose_name="添加人", max_length=255, blank=True, null=True)
-    addtime = models.DateField(verbose_name="添加时间", auto_now_add=True,blank=True, null=True)
-    updatetime = models.DateField(verbose_name="修改时间", auto_now_add=True,blank=True, null=True)
-    latestfetchtime = models.DateField(verbose_name="最新抓取时间", auto_now_add=True, blank=True, null=True)
+    addtime = models.DateTimeField(verbose_name="添加时间", auto_now_add=True,blank=True, null=True)
+    updatetime = models.DateTimeField(verbose_name="修改时间", auto_now_add=True,blank=True, null=True)
+    latestfetchtime = models.DateTimeField(verbose_name="最新抓取时间", auto_now_add=True, blank=True, null=True)
     fetchstatus = models.IntegerField(verbose_name="抓取状态", choices=((1, '全部'), (2, '失败'), (3, '完成')),blank=True, null=True)
     is_process = models.IntegerField(verbose_name="是否处理", choices=((1, '全部'),(2, '未处理'), (3, '已处理'), (4, '无')),blank=True, null=True)
     note = models.CharField(verbose_name="备注", max_length=255, blank=True, null=True)
@@ -55,4 +56,5 @@ class MediaLibrary(models.Model):
     class Meta:
 
         db_table = 'mx_medialibary'
+
 

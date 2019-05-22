@@ -12,6 +12,7 @@
     </style>
 {% endblock %}
 {% block content %}
+    <div id="vm_data">
     <div class="form-group">
                         <div class="select clearfix">
                             <label class="w30 ar fl">抓取状态：</label>
@@ -31,8 +32,15 @@
                                 <select name="is_auther" id="is_auther" class="form-control">
                                     <option value="1">无</option>
                                     <option value="2">有作者</option>
-                                    <option value="3">有互动</option>
-                                    <option value=4">有原创转载</option>
+                                    <option value="23">有作者，有互动</option>
+                                    <option value="24">有作者，有原创</option>
+                                    <option value="25">有作者，有转载</option>
+                                    <option value="235">有作者，有互动，有转载</option>
+                                    <option value="234">有作者，有互动，有原创</option>
+                                    <option value="34">有互动，有原创</option>
+                                    <option value="35">有互动，有转载</option>
+                                    <option value="345">有互动，有原创，有转载</option>
+                                    <option value="2345">有作者，有互动，有原创，有转载</option>
                                 </select>
                             </div>
                         </div>
@@ -83,11 +91,12 @@
 
     <div class="form-group">
                 <div class="select clearfix">
-                    <label class="w30 ar fl">是否应用讯讯：</label>
+                    <label class="w30 ar fl">是否应用迅迅：</label>
                     <div class="select w50 fr">
                         <select name="is_xunxun" id="is_xunxun" class="form-control">
-                            <option value="1">是</option>
-                            <option value="0">否</option>
+                            <option value="1">全部</option>
+                            <option value="2">是</option>
+                            <option value="3">否</option>
                         </select>
                     </div>
                 </div>
@@ -97,8 +106,9 @@
                 <label class="w30 ar fl">是否应用搜搜：</label>
                 <div class="select w50 fr">
                     <select name="is_sousou" id="is_sousou" class="form-control">
-                        <option value="1">是</option>
-                        <option value="0">否</option>
+                        <option value="1">全部</option>
+                        <option value="2">是</option>
+                        <option value="3">否</option>
                     </select>
                 </div>
             </div>
@@ -112,7 +122,7 @@
 
     </div>
 
-
+</div>
 
 
         <h1>划重点：</h1>
@@ -164,7 +174,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                   {% for result in data %}
+                   {% for result in brands %}
 
 {#                       <tr v-for="result in data">#}
                        <th style="text-align: center" width="1">{{ resul.id }}</th>
@@ -193,8 +203,8 @@
                         <th style="text-align: center">{{ result.many_choice }}</th>
                         <th style="text-align: center">{{ result.is_static }}</th>
                         <th style="text-align: center" width="140">
-                            <a class="btn btn-primary" href="{% url 'medialibary:detail_data' %}">编辑</a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(b.id)">删除</button>
+                            <a class="btn btn-primary" href="{% url 'medialibary:edit_brand' %}">编辑</a>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" @click="getIpId(result.id)">删除</button>
 
                         </th>
                         </tr>
@@ -207,14 +217,39 @@
             </table>
             </div>
         </div>
-     <aside class="paging">
-            <a>当前{{ page_data.number }}页</a>
-            <a href="{% url 'medialibary:download_mode'%}?page=1">第一页</a>
-            {% for i in page_data.paginator.page_range %}
-            <a href="{% url 'medialibary:download_mode' %}?page={{i}}">{{i}}</a>
-            {% endfor %}
-            <a href="{% url 'medialibary:download_mode'%}?page={{page_data.paginator.num_pages}}">最后一页</a>
-        </aside>
+        <div class="row">
+                <div class="pagination-container" v-if="brand_page.num_pages > 1">
+                    <ul class="pagination">
+                        <li :class="{active:page==brand_page.number}" v-for="page in brand_page.page_range_custom">
+                            <span v-if="page==-1">...</span>
+                            <a href="#" v-else @click.prevent="getBrands(page)">${page}</a>
+                        </li>
+                        <li class="lastLi">第<input type="text" :data-max-page="brand_page.num_pages" class="toPage" onkeypress="if(event.keyCode==13){if($(this).val() > parseInt($(this).data('max-page'))){$(this).val($(this).data('max-page'))}$(this).parents('.pagination').find('button').click();$(this).val('');}">页</li>
+                        <li><button href="#" class="btn btn-primary" onclick="vm.getBrands($(this).parents('.pagination').find('input').val())">GO</button></li>
+                    </ul>
+                </div>
+            </div>
+    <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">警...警告</h4>
+                    </div>
+                    <div class="modal-body">
+                        确定要删除这条数据吗？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="delBrand()">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="brand_id" value="" />
+
     <a href="/medialibary/export_emp_excel/">导出</a>
 
     <script type="text/javascript">
@@ -232,37 +267,7 @@
         }
     </script>
     <script>
-        function startGetPostInfo() {
-            if($("#fetchstatus").val().trim() === ''){
-                alert('请选择抓取状态');
-                return false;
-            }
-            if($("#is_auther").val().trim() === ''){
-                alert('请选择是否处理');
-                return false;
-            }
-            if($("#fetchlevel").val().trim() === ''){
-                alert('请选择抓取等级');
-                return false;
-            }
-            if($("#url").val().trim() === ''){
-                alert('请选择url');
-                return false;
-            }
-            if($("#is_static").val().trim() === ''){
-                alert('请选择是否为静态');
-                return false;
-            }
-            if($("#is_xunxun").val().trim() === ''){
-                alert('请选择是否为迅迅');
-                return false;
-            }
-            if($("#is_sousou").val().trim() === ''){
-                alert('请选择是否应用的搜搜');
-                return false;
-            }
-
-            var args_data = {
+    var args_data = {
                 "fetchstatus": $("#fetchstatus").val().trim(),
                 "is_auther": $("#is_auther").val().trim(),
                 "fetchlevel": $("#fetchlevel").val().trim(),
@@ -270,24 +275,73 @@
                 "is_static": $("#is_static").val().trim(),
                 "is_xunxun": $("#is_xunxun").val().trim(),
                 "is_sousou": $("#is_sousou").val().trim(),
-            };
+                "page": page,
+            }
+        var vm = new Vue({
+            el: '#vm_data',
+            data: {
+                brands: [],
+                page: 1,
+                brand_page: {},
+            },
+            methods: {
+                getBrands: function(page_no) {
+                    var page = page_no?page_no:1;
+                    $.ajax({
+                        type: 'POST',
+                        url: '/medialibary/show_data/',
+                        data:args_data,
+                        success: function(data) {
+                            var datas = JSON.parse(data);
+                            vm.brands = datas.brands;
+                            vm.brand_page = datas.brand_page;
+                        },
+                        error: function(){
+                            alert('error');
+                        }
+                    });
+
+                },
+                getBrandId:function(brand_id) {
+                    $("#brand_id").val(brand_id);
+                },
+                delBrand: function () {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/medialibary/del_medialibary/',
+                        data: {'brand_id':$("#brand_id").val().trim()},
+                        success: function(data){
+                            window.location.reload();
+                        },
+                        error: function(){
+                            alert('error');
+                        }
+                    });
+                }
+            },
+            mounted: function() {
+                this.getBrands();
+            }
+        });
+        function show_data() {
             $.ajax({
+                url: "/medialibary/show_data",
                 type: 'post',
-                data: args_data,
-                url: "/medialibary/show_data/",
-{#                cache: false,#}
-                success: function (data) {
-                    if (data === 'ok') {
-                        alert("搜索成功！");
-                    } else {
+                cache: false,
+                data: {'data': data},
+                success: function(data){
+                    resu = JSON.parse(data)
+                    if(resu.code=='200') {
+                        // 接收数据跟新到前台展示
+                        data=resu.data;
+                    }else{
                         alert(data);
                     }
                 },
-                error: function (error) {
-                    alert("提交失败");
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("没有查到想要得到的信息")
                 }
-            });
-
+            })
         }
         function getCookie(name) {
     var cookieValue = null;
@@ -304,7 +358,6 @@
     }
     return cookieValue;
 }
-
 function csrfSafeMethod(method) {
     // these HTTP methods do not require CSRF protection
     return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
@@ -316,7 +369,7 @@ $.ajaxSetup({
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
         }
     }
-});
+})
 
     </script>
 
