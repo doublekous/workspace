@@ -50,8 +50,9 @@ class MediaLibrary(models.Model):
         (8, "地域"),
     )
     many_choice = models.IntegerField(verbose_name="链接", choices=many_choice_mode, blank=True, null=True)
-    is_del = models.IntegerField(verbose_name="是否删除", choices=((1, '是'), (0, '否')), blank=True, null=True)
+    is_del = models.IntegerField(verbose_name="是否删除", choices=((1, '是'), (0, '否')), default=0, blank=True, null=True)
     count = models.IntegerField(verbose_name="修改量", blank=True, null=True)
+    is_select = models.BooleanField(verbose_name="是否选中", default=False)
 
     class Meta:
 

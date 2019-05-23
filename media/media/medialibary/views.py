@@ -29,7 +29,7 @@ import xlwt
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, render_to_response, redirect
 
 from media.settings import BASE_DIR
@@ -62,13 +62,14 @@ def file_down(request):
 def download_mode(request):
     """导入csv到数据库"""
     if request.method == 'GET':
-        page = int(request.POST.get('page', '1'))
-        page_n = 10 * (page - 1)
-        page_m = 10 * page
-        data_count = MediaLibrary.objects.all().count()
-        brands = MediaLibrary.objects.filter(fetchstatus=1, is_author=34, fetchlevel=2, is_static=1, is_xuxu=3, is_sousou=3, is_del=1).order_by('-id')[page_n:page_m]
-        brand_page = Pagenate(page, range(0, data_count), 10).json_result()
-        return render(request, 'medialibary/download_mode.html', {'brands': brands, 'brand_page': brand_page})
+        try:
+            page = int(request.GET.get('page', 1))
+        except Exception as e:
+            page = 1
+        data = MediaLibrary.objects.filter(is_del=0).all()
+        paninator = Paginator(data, 10)
+        page_data = paninator.page(page)
+        return render(request, 'medialibary/download_mode.html', {'page_data': page_data})
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
         ori_name = file_obj.name
@@ -87,6 +88,7 @@ def download_mode(request):
                 print parts[21].decode('GB2312').encode('utf-8')
                 print type(parts[21].decode('GB2312').encode('utf-8'))
                 try:
+
                     MediaLibrary.objects.create(
                         # id=parts[0].decode('GB2312').encode('utf-8'),
                         url=parts[1].decode('GB2312').encode('utf-8'),
@@ -113,7 +115,7 @@ def download_mode(request):
                         # is_del = int(parts[23].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 0,
                     )
                     count += 1
-                    MediaLibrary.objects.update(count=count,is_del=0)
+                    MediaLibrary.objects.update(count=count)
                 except Exception as e:
                     counts += 1
             return HttpResponse('插入了%s条数据,修改了%s条数据，点击网址刷新页面返回' % (count, counts2))
@@ -129,6 +131,9 @@ def show_updata_count(request):
 def export_emp_excel(request):
     """导出Excel报表"""
     # 创建Excel工作簿
+    import datetime
+    from django.utils.timezone import utc
+    utcnow = datetime.datetime.utcnow().replace(tzinfo=utc)
     workbook = xlwt.Workbook(encoding='utf-8')
     # 向工作簿中添加工作表
     sheet = workbook.add_sheet(u'models')
@@ -197,16 +202,19 @@ def show_data(request):
             return render(request, 'medialibary/download_mode.html', {'error': error})
         if sixdata:
             sevendata_count = sixdata.filter(is_sousou=is_sousou).count()
-            brands = sixdata.filter(is_sousou=is_sousou).order_by('-id')[page_n:page_m]
+            subscribes = sixdata.filter(is_sousou=is_sousou).order_by('-id')[page_n:page_m]
         else:
             error = '搜索的是否应用迅迅数据库没有对应的返回值'
             return render(request, 'medialibary/download_mode.html', {'error': error})
         page_items = Pagenate(page, range(0, sevendata_count), 10).json_result()
-        print(type(brands))
-        print(brands)
-        # return HttpResponse({'code': 200, 'data': brands, 'page_items': page_items})
-        # return render(request, 'medialibary/download_mode.html', {'data': brands, 'page_items': page_items})
-        return redirect(reverse('medialibary:show_data'))
+        print(type(subscribes))
+        print(subscribes)
+        res = dict(
+            code=200,
+            subscribes=subscribes,
+            page_items=page_items,
+        )
+        return HttpResponse(json.dumps(res))
 
 
 def edit_brand(request):
@@ -263,8 +271,7 @@ def edit_brand(request):
             return HttpResponse(e)
 
 
-def del_medialibary(request):
+def del_medialibary(request, url):
     if request.method == 'POST':
-        id = int(request.POST.get('id'))
-        delmedialibary = MediaLibrary.objects.filter(id=id).update(is_del=1)
-        return HttpResponse({'code': 200, 'del_medialibary': delmedialibary})
+        MediaLibrary.objects.filter(url=url).update(is_del=1)
+        return JsonResponse({'code': 200, 'msg': '请求成功'})

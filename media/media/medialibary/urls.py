@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'file_down/$', views.file_down, name='file_down'),
     url(r'show_data/$', views.show_data, name='show_data'),
     url(r'edit_brand/$', views.edit_brand, name='edit_brand'),
+    url(r'del_medialibary/(.)/$', views.del_medialibary, name='del_medialibary'),
 
 ]
