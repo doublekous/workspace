@@ -2,9 +2,7 @@
 from django.db import models
 
 
-
 class MediaLibrary(models.Model):
-    id = models.AutoField(primary_key=True)
     url = models.CharField(verbose_name="链接", max_length=255)
     secondpage = models.CharField(verbose_name="二级面板", max_length=255, blank=True, null=True)
     thirdpage = models.CharField(verbose_name="三级面板", max_length=255, blank=True, null=True)

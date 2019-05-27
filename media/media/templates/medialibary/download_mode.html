@@ -231,8 +231,8 @@
                         <th style="text-align: center">{{ result.many_choice }}</th>
                         <th style="text-align: center">{{ result.is_static }}</th>
                         <th style="text-align: center" width="140">
-                            <a class="btn btn-primary" href="{% url 'medialibary:edit_brand' %}">编辑</a>
-                            <a onclick="del_medialibary('{{ result.url }}')" title="删除" class="btn btn-primary">删除</a>
+                            <a class="btn btn-primary" href="{% url 'medialibary:edit_brand' result.id %}">编辑</a>
+                            <a onclick="del_medialibary({{ result.id }})" title="删除" class="btn btn-primary">删除</a>
 
                         </th>
                         </tr>
@@ -257,16 +257,47 @@
     </div>
 
     <script>
-
-    function del_medialibary(url){
+    function searchInfo(){
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+        var args_data = {
+                "fetchstatus": $("#fetchstatus").val().trim(),
+                "is_auther": $("#is_auther").val().trim(),
+                "fetchlevel": $("#fetchlevel").val().trim(),
+                "url": $("#url").val().trim(),
+                "is_static": $("#is_static").val().trim(),
+                "is_xunxun": $("#is_xunxun").val().trim(),
+                "is_sousou": $("#is_sousou").val().trim(),
+            };
+        $.ajax({
+            url: '/medialibary/show_data/',
+            dateType: 'json',
+            type: 'POST',
+            data: args_data,
+            headers: {'X-CSRFTOKEN':csrf},
+            success: function(data){
+                resu = JSON.parse(data)
+                if(resu.code == '200'){
+                    alter('成功')
+                    page_data = resu.page_data;
+                }
+            },
+            error: function(data){
+                alter('失败')
+            }
+        })
+    }
+    </script>
+    <script>
+    function del_medialibary(id){
         var csrf = $('input[name="csrfmiddlewaretoken"]').val()
         $.ajax({
-            url:'/medialibary/del_medialibary/'+ url +'/',
+            url:'/medialibary/del_medialibary/'+ id +'/',
             dateType: 'json',
             type: 'POST',
             headers: {'X-CSRFTOKEN':csrf},
             success: function(data){
                 if(data.code == '200'){
+                    alert('删除成功')
                     locations.href = '/medialibary/download_mode/'
                 }
             },
@@ -292,66 +323,6 @@
         }
     </script>
     <script>
-    var vm_hd = new Vue({
-        el: '#vm_hd_data',
-        data: {
-            subscribes: [],
-            page: 1,
-            page_items: {}
-        },
-        delimiters: ["${", "}"],
-        methods: {
-            subInfo_hd: function (page_no) {
-                var page = page_no ? page_no : 1;
-                $.ajax({
-                    type: 'post',
-                    data: {'page': page},
-                    url: "/medialibary/show_data/",
-                    cache: false,
-                    success: function (data) {
-                        var datas = JSON.parse(data);
-                        if (data.code === '200') {
-                            alert("提交成功");
-                            vm_hd.subscribes = datas.subscribes;
-                            vm_hd.page_items = datas.page_items;
-                        } else {
-                            alert('error');
-                        }
-                    },
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        alert("提交失败");
-                    }
-                });
-                function searchInfo() {
-                    var data = {
-                        "fetchstatus": $("#fetchstatus").val().trim(),
-                        "is_auther": $("#is_auther").val().trim(),
-                        "fetchlevel": $("#fetchlevel").val().trim(),
-                        "url": $("#url").val().trim(),
-                        "is_static": $("#is_static").val().trim(),
-                        "is_xunxun": $("#is_xunxun").val().trim(),
-                        "is_sousou": $("#is_sousou").val().trim(),
-                    };
-                    $.ajax({
-                        type: 'post',
-                        data: data,
-                        url: "/medialibary/show_data/",
-                        cache: false,
-                        success: function (data) {
-                            var datas = JSON.parse(data);
-                            if (data.code === '200') {
-                                alert("提交成功");
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            alert("提交失败");
-                        }
-                    });
-                }
-            }
-        }
-    })
-
 
             function getCookie(name) {
     var cookieValue = null;

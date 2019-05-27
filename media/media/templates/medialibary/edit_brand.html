@@ -99,166 +99,108 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container" style="min-height:400px;">
-        <div class="row">
-            <div id="main">
-                <div class="wrapper">
-                    <div class="content">
-                        <div class="interact">
-                            <input type="hidden" id="brand_id" name="brand_id" value="{{ brand.id }}"/>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>url:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="url" id="brand_name" value="{{ brand.name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>二级板面:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="secondpage" id="level" value="{{ brand.level }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>三级版面:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="thirdpage" id="cn_name" value="{{ brand.cn_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>迅迅别称:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="xunxun_nickname" id="en_name" value="{{ brand.en_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>搜搜别称:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="sousou_nickname" id="short_name" value="{{ brand.short_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>网站:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="website" id="synonyms" value="{{ brand.synonyms }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>网站类型:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="sitetype" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                             <div class="row">
-                                <div class="col-md-2 col"><label>地域:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="regional" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                             <div class="row">
-                                <div class="col-md-2 col"><label>抓取等级:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="fetchlevel" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                             <div class="row">
-                                <div class="col-md-2 col"><label>昨日抓取量:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="yesterdaycapture" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                             <div class="row">
-                                <div class="col-md-2 col"><label>是否有作者/转载/互动原创:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="is_author" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                             <div class="row">
-                                <div class="col-md-2 col"><label>添加人:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="addpaper" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>最新抓取时间:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="latestfetchtime" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>抓取状态:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="fetchstatus" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>作者/原创是否转载:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="is_process" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>备注:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="note" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>是否应用迅迅:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="is_xuxu" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>是否应用搜搜:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="is_sousou" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>更多:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="many_choice" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-2 col"><label>是否是静态:</label></div>
-                                <div class="col-md-10 col"><input type="text" name="is_static" id="search_name" value="{{ brand.search_name }}"/></div>
-                            </div>
-                            <li>
-                                <span class="item_name" style="width:120px;"></span>
-                                <input type="submit" class="link_btn"/>
-                            </li>
-                        </div>
-                    </div>
-                </div><!--end wrapper-->
-            </div><!-- main -->
-        </div>
-    </div>
-    <script>
-    $(".tag_Identity>.tags").find("span").each(function(){
-        $(this).click(function(){
-            me = $(this);
-            tg_name = $.trim(me.html());
-            tg_id = $.trim(me.data("tag_id"));
-            $(".tag_Identity>.selected").append("<div class='check'><span data-tag_id="+tg_id+">"+tg_name+"</span><span class='delIdentityTag' onclick='delIdentityTag(this)'>删除</span></div>")
+<form action="" method="post" enctype="multipart/form-data">
+           {% csrf_token %}
+            <section>
+                <ul class="ulColumn2">
+                    <li>
+                        <span class="item_name" style="width:120px;">url：</span>
+                        <input type="text" name="url" value="{{edit_medialibary.url}}" class="textbox textbox_295" placeholder="url..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">二级版面：</span>
+                        <input type="text" name="secondpage" value="{{edit_medialibary.secondpage}}"  class="textbox" placeholder="二级版面..."/>
+                    </li>
 
-        })
-    });
-    function delIdentityTag(me){
-        me = $(me);
-        me.parent("div").remove()
-    }
-    function showIdentityTag(me){
-        me = $(me);
-        $(".tag_Identity>.title").find('.te').each(function(){
-            $(this).css("background-color", "white").css("color","black");
-        });
-        me.css("background-color", "#008000").css("color","white");
-        $(".tag_Identity>.tags").find(".dv").css("display","none");
-        $(".tag_Identity>.tags").find(".dv[value="+$.trim(me.html())+"]").css("display","table");
-    }
-    function hideTag(me) {
+                        <span class="item_name" style="width:120px;">三级版面：</span>
+                        <input type="text" name="thirdpage" value="{{edit_medialibary.thirdpage}}"  class="textbox textbox_295" placeholder="三级版面..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">迅迅别称：</span>
+                        <input type="text" name="xunxun_nickname" value="{{edit_medialibary.xunxun_nickname}}" class="textbox textbox_295" placeholder="迅迅别称..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">搜搜别称：</span>
+                        <input type="text" name="sousou_nickname" value="{{edit_medialibary.sousou_nickname}}" class="textbox textbox_295" placeholder="搜搜别称..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">网站类型：</span>
+                        <input type="text" name="sitetype" value="{{edit_medialibary.sitetype}}" class="textbox textbox_295" placeholder="网站..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">网站：</span>
+                        <input type="text" name="website" value="{{edit_medialibary.website}}" class="textbox textbox_295" placeholder="网站类型..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">地域：</span>
+                        <input type="text" name="regional" value="{{edit_medialibary.regional}}" class="textbox textbox_295" placeholder="地域..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">抓取等级：</span>
+                        <input type="text" name="fetchlevel" value="{{edit_medialibary.fetchlevel}}" class="textbox textbox_295" placeholder="抓取等级..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">昨日抓取量：</span>
+                        <input type="text" name="yesterdaycapture" value="{{edit_medialibary.yesterdaycapture}}" class="textbox textbox_295" placeholder="昨日抓取量..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否有作者互动转载：</span>
+                        <input type="text" name="is_author" value="{{edit_medialibary.is_author}}" class="textbox textbox_295" placeholder="是否有作者互动转载..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">添加人：</span>
+                        <input type="text" name="addpaper" value="{{edit_medialibary.addpaper}}" class="textbox textbox_295" placeholder="添加人..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">修改时间：</span>
+                        <input type="text" name="updatetime" value="{{edit_medialibary.updatetime}}" class="textbox textbox_295" placeholder="网站类型..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">最新抓取时间：</span>
+                        <input type="text" name="latestfetchtime" value="{{edit_medialibary.latestfetchtime}}" class="textbox textbox_295" placeholder="最新抓取时间..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">抓取状态：</span>
+                        <input type="text" name="fetchstatus" value="{{edit_medialibary.fetchstatus}}" class="textbox textbox_295" placeholder="抓取状态..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">作者互动/原创/是否转载：</span>
+                        <input type="text" name="is_process" value="{{edit_medialibary.is_process}}" class="textbox textbox_295" placeholder="作者互动/原创/是否转载..."/>
+                    </li>
+                    <li>
+                        <span class="note" style="width:120px;">备注：</span>
+                        <input type="text" name="note" value="{{edit_medialibary.note}}" class="textbox textbox_295" placeholder="备注..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否应用的迅迅：</span>
+                        <input type="text" name="is_xuxu" value="{{edit_medialibary.is_xuxu}}" class="textbox textbox_295" placeholder="是否应用到迅迅..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否应用到搜搜：</span>
+                        <input type="text" name="is_sousou" value="{{edit_medialibary.is_sousou}}" class="textbox textbox_295" placeholder="是否应用到搜搜..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">跟多选择：</span>
+                        <input type="text" name="many_choice" value="{{edit_medialibary.many_choice}}" class="textbox textbox_295" placeholder="更多选择..."/>
+                    </li>
+                    <li>
+                        <span class="item_name" style="width:120px;">是否是静态：</span>
+                        <input type="text" name="is_static" value="{{edit_medialibary.is_static}}" class="textbox textbox_295" placeholder="是否是静态..."/>
+                    </li>
 
-    }
+                    <!--<li>-->
+                        <!--<span class="item_name" style="width:120px;">产品详情：</span>-->
 
-    $("#btn_save").click(function () {
-        var args={};
-        args["brand_id"] = $.trim($("#brand_id").val());
-        args["brand_name"] = $.trim($("#brand_name").val());
-        args["level"] = $.trim($("#level").val());
-        args["cn_name"] = $.trim($("#cn_name").val());
-        args["en_name"] = $.trim($("#en_name").val());
-        args["short_name"] = $.trim($("#short_name").val());
-        args["search_name"] = $.trim($("#search_name").val());
-        args["synonyms"] = $.trim($("#synonyms").val());
-        args["is_active"] = $.trim($("#is_active").val());
-
-        if(args["brand_name"] == ""){
-            alert("品牌识别名不能为空！");
-            return false;
-        }
-
-        var tags_new='';
-        $(".tag_Identity>.selected").find("span:not('.delIdentityTag')").each(function(){
-            tags_new = tags_new+$.trim($(this).data("tag_id"))+"@"
-        });
-        args["tags_new"] = tags_new;
-
-        $.post('/community/save_brand/',
-            args,
-            function(msg){
-                if(msg!='ok'){
-                    alert('更新失败'+msg);
-                }
-                else{
-                    alert('更新成功');
-                }
-            }
-        )
-
-    });
-</script>
+                        <!--<textarea id="editor_id" name="content" style="width:700px;height:300px;">-->
+                            <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
+                        <!--</textarea>-->
+                    <!--</li>-->
+                    <li>
+                        <span class="item_name" style="width:120px;"></span>
+                        <input type="submit" class="link_btn"/>
+                    </li>
+                </ul>
+            </section>
+        </form>
 {% endblock %}
 

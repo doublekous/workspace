@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from django.forms import model_to_dict
 from django.views.decorators.csrf import csrf_protect
 
+import medialibary
 from utils.common import Pagenate
 
 defaultencoding = 'utf-8'
@@ -69,6 +70,10 @@ def download_mode(request):
         data = MediaLibrary.objects.filter(is_del=0).all()
         paninator = Paginator(data, 10)
         page_data = paninator.page(page)
+        print(type(page_data))
+        print(page_data)
+        print(data)
+        print(type(data))
         return render(request, 'medialibary/download_mode.html', {'page_data': page_data})
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
@@ -85,8 +90,6 @@ def download_mode(request):
             counts = 0
             counts2 = 0
             for parts in reader:
-                print parts[21].decode('GB2312').encode('utf-8')
-                print type(parts[21].decode('GB2312').encode('utf-8'))
                 try:
 
                     MediaLibrary.objects.create(
@@ -112,7 +115,7 @@ def download_mode(request):
                         is_sousou=int(parts[20].decode('GB2312').encode('utf-8')) if parts[20].decode('GB2312').encode('utf-8') else 3,
                         many_choice=int(parts[21].decode('GB2312').encode('utf-8')) if parts[21].decode('GB2312').encode('utf-8') else None,
                         is_static = int(parts[22].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 1,
-                        # is_del = int(parts[23].decode('GB2312').encode('utf-8')) if parts[22].decode('GB2312').encode('utf-8') else 0,
+
                     )
                     count += 1
                     MediaLibrary.objects.update(count=count)
@@ -177,8 +180,6 @@ def show_data(request):
         is_static = request.POST.get('is_static')
         is_xunxun = request.POST.get('is_xunxun')
         is_sousou = request.POST.get('is_sousou')
-        page_n = 10 * (page - 1)
-        page_m = 10 * page
         data = MediaLibrary.objects.filter(fetchstatus=fetchstatus).order_by('-id')
         if data:
             seconddata = data.filter(is_author=is_auther).order_by('-id')
@@ -202,26 +203,21 @@ def show_data(request):
             return render(request, 'medialibary/download_mode.html', {'error': error})
         if sixdata:
             sevendata_count = sixdata.filter(is_sousou=is_sousou).count()
-            subscribes = sixdata.filter(is_sousou=is_sousou).order_by('-id')[page_n:page_m]
+            subscribes = sixdata.filter(is_sousou=is_sousou).all().order_by('-id')
+            paninator = Paginator(subscribes, 10)
+            page_data = paninator.page(page)
+            print(page_data)
+            print(type(page_data))
+            return render(request, 'medialibary/download_mode.html', {'code': 200, 'page_data': page_data})
         else:
             error = '搜索的是否应用迅迅数据库没有对应的返回值'
             return render(request, 'medialibary/download_mode.html', {'error': error})
-        page_items = Pagenate(page, range(0, sevendata_count), 10).json_result()
-        print(type(subscribes))
-        print(subscribes)
-        res = dict(
-            code=200,
-            subscribes=subscribes,
-            page_items=page_items,
-        )
-        return HttpResponse(json.dumps(res))
 
 
-def edit_brand(request):
+def edit_brand(request, id):
     if request.method == 'GET':
-
-        brand = MediaLibrary.objects.all()
-        return render(request, 'medialibary/edit_brand.html', locals())
+        edit_medialibary = MediaLibrary.objects.filter(pk=id).first()
+        return render(request, 'medialibary/edit_brand.html', {'edit_medialibary': edit_medialibary})
     if request.method == 'POST':
         url = request.POST.get('url')
         secondpage = request.POST.get('secondpage', '')
@@ -231,21 +227,21 @@ def edit_brand(request):
         website = request.POST.get('website', '')
         sitetype = request.POST.get('sitetype', '')
         regional = request.POST.get('regional', '')
-        fetchlevel = request.POST.get('fetchlevel', '')
+        fetchlevel = int(request.POST.get('fetchlevel', ''))
         yesterdaycapture = request.POST.get('yesterdaycapture', '')
-        is_author = request.POST.get('is_author', '')
+        is_author = int(request.POST.get('is_author', ''))
         addpaper = request.POST.get('addpaper', '')
-        fetchstatus = request.POST.get('fetchstatus', '')
-        is_process = request.POST.get('is_process', '')
+        fetchstatus = int(request.POST.get('fetchstatus', ''))
+        is_process = int(request.POST.get('is_process', ''))
         note = request.POST.get('note', '')
-        is_xuxu = request.POST.get('is_xuxu', '')
-        is_sousou = request.POST.get('is_sousou', '')
+        is_xuxu = int(request.POST.get('is_xuxu', ''))
+        is_sousou = int(request.POST.get('is_sousou', ''))
         many_choice = request.POST.get('many_choice', '')
-        is_static = request.POST.get('is_static', '')
+        is_static = int(request.POST.get('is_static', ''))
         pass
         try:
             # 跟新数据库数据
-            MediaLibrary.objects.filter(url=url).update(
+            MediaLibrary.objects.filter(id=id).update(
                 url=url,
                 secondpage=secondpage,
                 thirdpage=thirdpage,
@@ -255,7 +251,7 @@ def edit_brand(request):
                 sitetype=sitetype,
                 regional=regional,
                 fetchlevel=fetchlevel,
-                yesterdaycapture=yesterdaycapture,
+                yesterdaycapture=yesterdaycapture if yesterdaycapture else 0,
                 is_author=is_author,
                 addpaper=addpaper,
                 fetchstatus=fetchstatus,
@@ -263,7 +259,7 @@ def edit_brand(request):
                 note=note,
                 is_xuxu=is_xuxu,
                 is_sousou=is_sousou,
-                many_choice=many_choice,
+                many_choice=many_choice if many_choice else 0,
                 is_static=is_static
             )
             return HttpResponse('ok')
@@ -271,7 +267,7 @@ def edit_brand(request):
             return HttpResponse(e)
 
 
-def del_medialibary(request, url):
+def del_medialibary(request, id):
     if request.method == 'POST':
-        MediaLibrary.objects.filter(url=url).update(is_del=1)
+        MediaLibrary.objects.filter(pk=id).update(is_del=1)
         return JsonResponse({'code': 200, 'msg': '请求成功'})
