@@ -12,281 +12,335 @@
     </style>
 {% endblock %}
 {% block content %}
-    <div id="vm_data">
-        <div class="form-group">
-                            <div class="select clearfix">
-                                <label class="w30 ar fl">抓取状态：</label>
-                                <div class="select w50 fr">
-                                    <select name="fetchstatus" id="fetchstatus" class="form-control">
-                                        <option value="1">全部</option>
-                                        <option value="2">失败</option>
-                                        <option value="3">完成</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-        <div class="form-group">
-                            <div class="select clearfix">
-                                <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
-                                <div class="select w50 fr">
-                                    <select name="is_auther" id="is_auther" class="form-control">
-                                        <option value="1">无</option>
-                                        <option value="2">有作者</option>
-                                        <option value="23">有作者，有互动</option>
-                                        <option value="24">有作者，有原创</option>
-                                        <option value="25">有作者，有转载</option>
-                                        <option value="235">有作者，有互动，有转载</option>
-                                        <option value="234">有作者，有互动，有原创</option>
-                                        <option value="34">有互动，有原创</option>
-                                        <option value="35">有互动，有转载</option>
-                                        <option value="345">有互动，有原创，有转载</option>
-                                        <option value="2345">有作者，有互动，有原创，有转载</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-        <div class="form-group">
-                            <div class="select clearfix">
-                                <label class="w30 ar fl">抓取等级：</label>
-                                <div class="select w50 fr">
-                                    <select name="fetchlevel" id="fetchlevel" class="form-control">
-                                        <option value="1">全部</option>
-                                        <option value="2">高</option>
-                                        <option value="3">中</option>
-                                        <option value="4">低</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-        <div class="form-group">
+<div id="vm_data">
+<div class="form-inline">
+    <div class="form-group">
                         <div class="select clearfix">
-                            <label class="w30 ar fl">链接：</label>
+                            <label class="w30 ar fl">抓取状态：</label>
                             <div class="select w50 fr">
-                                <select name="url" id="url" class="form-control">
-                                    <option value="1">链接</option>
-                                    <option value="2">网站</option>
-                                    <option value="3">二级版面</option>
-                                    <option value="4">三级版面</option>
-                                    <option value="5">危机APP别称</option>
-                                    <option value="6">搜搜别称</option>
-                                    <option value="7">网站类型</option>
-                                    <option value="8">地域</option>
+                                <select name="fetchstatus" id="fetchstatus" class="form-control">
+                                    <option value="1">全部</option>
+                                    <option value="2">失败</option>
+                                    <option value="3">完成</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-        <div class="form-group">
-                            <div class="select clearfix">
-                                <label class="w30 ar fl">是否是否静态：</label>
-                                <div class="select w50 fr">
-                                    <select name="is_static" id="is_static" class="form-control">
-                                        <option value="1">是静态</option>
-                                        <option value="2">是动态</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-        <div class="form-group">
-                    <div class="select clearfix">
-                        <label class="w30 ar fl">是否应用迅迅：</label>
-                        <div class="select w50 fr">
-                            <select name="is_xunxun" id="is_xunxun" class="form-control">
-                                <option value="1">全部</option>
-                                <option value="2">是</option>
-                                <option value="3">否</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-        <div class="form-group">
-                <div class="select clearfix">
-                    <label class="w30 ar fl">是否应用搜搜：</label>
-                    <div class="select w50 fr">
-                        <select name="is_sousou" id="is_sousou" class="form-control">
-                            <option value="1">全部</option>
-                            <option value="2">是</option>
-                            <option value="3">否</option>
-                        </select>
-                    </div>
-                </div>
-            <button type="button" class="btn btn-primary"onclick="searchInfo()" >搜索</button>
-            <div id="fill_data">
-            <div class="loading" style="display:none">
-                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                <span class="sr-only">Loading...</span>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
+            <div class="select w50 fr">
+                <select name="is_auther" id="is_auther" class="form-control">
+                    <option value="1">无</option>
+                    <option value="2">有作者</option>
+                    <option value="23">有作者，有互动</option>
+                    <option value="24">有作者，有原创</option>
+                    <option value="25">有作者，有转载</option>
+                    <option value="235">有作者，有互动，有转载</option>
+                    <option value="234">有作者，有互动，有原创</option>
+                    <option value="34">有互动，有原创</option>
+                    <option value="35">有互动，有转载</option>
+                    <option value="345">有互动，有原创，有转载</option>
+                    <option value="2345">有作者，有互动，有原创，有转载</option>
+                </select>
             </div>
-
-
-            </div>
-            </div>
-
-
-
-
-        <h1>划重点：</h1>
-        <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件，是否搜搜和是否讯讯没有用写1，上传成功后刷新网址栏返回页面</h4>
-        <br>
-        点击 :<a href="/medialibary/file_down/">下载模板</a>
-        <br>
-        <div class="form-group file">
-            <form name="update_by_url" id="download_mode" action="/medialibary/download_mode/" method="post"
-                  enctype="multipart/form-data">
-                {% csrf_token %}
-                <input id="file_upload_trumpl" name="file_upload_trumpl" type="file">
-                <br>
-                <button type="button" onclick="check_filepath()" type="submit">上传</button>
-            </form>
-
         </div>
+    </div>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">抓取等级：</label>
+            <div class="select w50 fr">
+                <select name="fetchlevel" id="fetchlevel" class="form-control">
+{#                                        <option value="1">全部</option>#}
+                    <option value="2">高</option>
+                    <option value="3">中</option>
+                    <option value="4">低</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">链接：</label>
+            <div class="select w50 fr">
+                <select name="url" id="url" class="form-control">
+                    <option value="1">链接</option>
+                    <option value="2">网站</option>
+                    <option value="3">二级版面</option>
+                    <option value="4">三级版面</option>
+                    <option value="5">危机APP别称</option>
+                    <option value="6">搜搜别称</option>
+                    <option value="7">网站类型</option>
+                    <option value="8">地域</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">是否是否静态：</label>
+            <div class="select w50 fr">
+                <select name="is_static" id="is_static" class="form-control">
+                    <option value="1">是静态</option>
+                    <option value="2">是动态</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">是否应用迅迅：</label>
+            <div class="select w50 fr">
+                <select name="is_xunxun" id="is_xunxun" class="form-control">
+                    <option value="1">全部</option>
+                    <option value="2">是</option>
+                    <option value="3">否</option>
+                </select>
+            </div>
+        </div>
+</div>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">是否应用搜搜：</label>
+            <div class="select w50 fr">
+                <select name="is_sousou" id="is_sousou" class="form-control">
+                    <option value="1">全部</option>
+                    <option value="2">是</option>
+                    <option value="3">否</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary"onclick="vm.searchInfo()" >搜索</button>
+    </div>
+</div>
+    <h1>划重点：</h1>
+    <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件，是否搜搜和是否讯讯没有用写1，上传成功后刷新网址栏返回页面</h4>
+    <br>
+    点击 :<a href="/medialibary/file_down/">下载模板</a>
+    <br>
+    <div class="form-group file">
+        <form name="update_by_url" id="download_mode" action="/medialibary/download_mode/" method="post"
+              enctype="multipart/form-data">
+            {% csrf_token %}
+            <input id="file_upload_trumpl" name="file_upload_trumpl" type="file">
+            <br>
+            <button type="button" onclick="check_filepath()" type="submit">上传</button>
+        </form>
 
     </div>
-    <div id="vm_hd_data">
-    <div class="row">
-                    <div class="pagination-container">
-                        <ul class="pagination" v-if="page_items.num_pages > 1">
-                            <li :class="{active:page==page_items.number}" v-for="page in page_items.page_range_custom">
-                                <span v-if="page==-1">...</span>
-                                <a href="#" v-else @click.prevent="subInfo_hd(page)">${page}</a>
-                            </li>
-                            <li class="lastLi">第
-                                <input type="text"
-                                       :data-max-page="page_items.num_pages"
-                                       class="toPage"
-                                       onkeypress="if(event.keyCode==13){
-                                       if($(this).val() > parseInt($(this).data('max-page'))){
-                                           $(this).val($(this).data('max-page'))
-                                       }$(this).parents('.pagination').find('button').click();$(this).val('');}">页
-                            </li>
-                            <li>
-                                <button href="#" class="btn btn-primary"
-                                        onclick="vm_hd.subInfo_hd($(this).parents('.pagination').find('input').val())">
-                                    GO
-                                </button>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-     <div class="row" >
-            <div >
-                <table width="2000"border="1" >
-                <thead>
+
+    <div class="row" >
+        <div>
+            <table width="2000"border="1" >
+            <thead>
+                <tr>
+                    <th style="text-align: center"width="50" >选中</th>
+                    <th style="text-align: center" width="100">链接</th>
+                    <th style="text-align: center" width="120">二级版面</th>
+                    <th style="text-align: center" width="120">三级版面</th>
+                    <th style="text-align: center" width="120">讯讯别称</th>
+                    <th style="text-align: center" width="120">搜搜别称</th>
+                    <th style="text-align: center" width="120">网站</th>
+                    <th style="text-align: center" width="120">网站类型</th>
+                    <th style="text-align: center" width="120">地域</th>
+                    <th style="text-align: center" width="120">抓取等级</th>
+                    <th style="text-align: center" width="120">昨日抓取量</th>
+                    <th style="text-align: center" width="150">是否有作者/互动/转载</th>
+                    <th style="text-align: center" width="80">添加人</th>
+                    <th style="text-align: center" width="120">添加时间</th>
+                    <th style="text-align: center" width="120">修改时间</th>
+                    <th style="text-align: center" width="120">最新抓取时间</th>
+                    <th style="text-align: center" width="120">抓取状态</th>
+                    <th style="text-align: center" width="150">作者/互动/原创是否转载</th>
+                    <th style="text-align: center" width="120">备注</th>
+                    <th style="text-align: center" width="120">是否应用讯讯</th>
+                    <th style="text-align: center" width="120">是否应用搜搜</th>
+                    <th style="text-align: center" width="120">更多</th>
+                    <th style="text-align: center" width="120">是否是静态</th>
+                    <th style="text-align: center" width="160">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-for="result in searchdatas">
                     <tr>
-                        <th style="text-align: center"width="50" >选中</th>
-                        <th style="text-align: center" width="100">链接</th>
-                        <th style="text-align: center" width="120">二级版面</th>
-                        <th style="text-align: center" width="120">三级版面</th>
-                        <th style="text-align: center" width="120">讯讯别称</th>
-                        <th style="text-align: center" width="120">搜搜别称</th>
-                        <th style="text-align: center" width="120">网站</th>
-                        <th style="text-align: center" width="120">网站类型</th>
-                        <th style="text-align: center" width="120">地域</th>
-                        <th style="text-align: center" width="120">抓取等级</th>
-                        <th style="text-align: center" width="120">昨日抓取量</th>
-                        <th style="text-align: center" width="150">是否有作者/互动/转载</th>
-                        <th style="text-align: center" width="80">添加人</th>
-                        <th style="text-align: center" width="120">添加时间</th>
-                        <th style="text-align: center" width="120">修改时间</th>
-                        <th style="text-align: center" width="120">最新抓取时间</th>
-                        <th style="text-align: center" width="120">抓取状态</th>
-                        <th style="text-align: center" width="150">作者/互动/原创是否转载</th>
-                        <th style="text-align: center" width="120">备注</th>
-                        <th style="text-align: center" width="120">是否应用讯讯</th>
-                        <th style="text-align: center" width="120">是否应用搜搜</th>
-                        <th style="text-align: center" width="120">更多</th>
-                        <th style="text-align: center" width="120">是否是静态</th>
-                        <th style="text-align: center" width="160">操作</th>
+                    <th style="text-align: center" width="1"><li style="list-style: none"><input type="checkbox" name=""></li></th>
+                    <th style="text-align: center" width="20">
+                        <a href="{{ result.url }}">
+                        ${ result.url }</a></th>
+                    <th style="text-align: center">${ result.secondpage }</th>
+                    <th style="text-align: center" width="50">${ result.thirdpage }</th>
+                    <th style="text-align: center">${ result.xunxun_nickname }</th>
+                    <th style="text-align: center" width="50">${ result.sousou_nickname }</th>
+                    <th style="text-align: center">${ result.website }</th>
+                    <th style="text-align: center" width="50">${ result.sitetype }</th>
+                    <th style="text-align: center">${ result.regional }</th>
+                    <th style="text-align: center">${ result.fetchlevel }</th>
+                    <th style="text-align: center">${ result.yesterdaycapture }</th>
+                    <th style="text-align: center" width="150">${ result.is_author }</th>
+                    <th style="text-align: center">${ result.addpaper }</th>
+                    <th style="text-align: center">${ result.addtime }</th>
+                    <th style="text-align: center">${ result.updatetime }</th>
+                    <th style="text-align: center">${ result.latestfetchtime }</th>
+                    <th style="text-align: center">${ result.fetchstatus }</th>
+                    <th style="text-align: center">${ result.is_process }</th>
+                    <th style="text-align: center">${ result.note }</th>
+                    <th style="text-align: center">${ result.is_xuxu }</th>
+                    <th style="text-align: center">${ result.is_sousou }</th>
+                    <th style="text-align: center">${ result.many_choice }</th>
+                    <th style="text-align: center">${ result.is_static }</th>
+                    <th style="text-align: center" width="140">
+{#                        <a class="btn btn-primary" href="${ url 'medialibary:edit_brand' result.id }">编辑</a>#}
+                        <a onclick="del_medialibary({{ result.id }})" title="删除" class="btn btn-primary">删除</a>
+                    </th>
                     </tr>
-                </thead>
-                <tbody>
-                {% for result in page_data %}
-
-{#                       <tr v-for="result in data">#}
-
-                       <th style="text-align: center" width="1"><li style="list-style: none"><input type="checkbox" name=""></li></th>
-                        <th style="text-align: center" width="20">
-                            <a href="{{ result.url }}">
-                            {{ result.url }}</a></th>
-                        <th style="text-align: center">{{ result.secondpage }}</th>
-                        <th style="text-align: center" width="50">{{ result.thirdpage }}</th>
-                        <th style="text-align: center">{{ result.xunxun_nickname }}</th>
-                        <th style="text-align: center" width="50">{{ result.sousou_nickname }}</th>
-                        <th style="text-align: center">{{ result.website }}</th>
-                        <th style="text-align: center" width="50">{{ result.sitetype }}</th>
-                        <th style="text-align: center">{{ result.regional }}</th>
-                        <th style="text-align: center">{{ result.fetchlevel }}</th>
-                        <th style="text-align: center">{{ result.yesterdaycapture }}</th>
-                        <th style="text-align: center" width="150">{{ result.is_author }}</th>
-                        <th style="text-align: center">{{ result.addpaper }}</th>
-                        <th style="text-align: center">{{ result.addtime }}</th>
-                        <th style="text-align: center">{{ result.updatetime }}</th>
-                        <th style="text-align: center">{{ result.latestfetchtime }}</th>
-                        <th style="text-align: center">{{ result.fetchstatus }}</th>
-                        <th style="text-align: center">{{ result.is_process }}</th>
-                        <th style="text-align: center">{{ result.note }}</th>
-                        <th style="text-align: center">{{ result.is_xuxu }}</th>
-                        <th style="text-align: center">{{ result.is_sousou }}</th>
-                        <th style="text-align: center">{{ result.many_choice }}</th>
-                        <th style="text-align: center">{{ result.is_static }}</th>
-                        <th style="text-align: center" width="140">
-                            <a class="btn btn-primary" href="{% url 'medialibary:edit_brand' result.id %}">编辑</a>
-                            <a onclick="del_medialibary({{ result.id }})" title="删除" class="btn btn-primary">删除</a>
-
-                        </th>
-                        </tr>
-
-                   {% endfor %}
-                </tbody>
+                </template>
+            </tbody>
             </table>
-            </div>
         </div>
+    </div>
+    <div class="row">
+        <div class="pagination-container" v-if="page_items.num_pages > 1">
+            <ul class="pagination">
+                <li :class="{active:page==page_items.number}" v-for="page in page_items.page_range_custom">
+                    <span v-if="page==-1">...</span>
+                    <a href="#" v-else @click.prevent="searchInfo(page)">${page}</a>
+                </li>
+                <li class="lastLi">第<input type="text" :data-max-page="page_items.num_pages" class="toPage" onkeypress="if(event.keyCode==13){if($(this).val() > searchInfo($(this).data('max-page'))){$(this).val($(this).data('max-page'))}$(this).parents('.pagination').find('button').click();$(this).val('');}">页</li>
+                <li><button href="#" class="btn btn-primary" onclick="vm.searchInfo($(this).parents('.pagination').find('input').val())">GO</button></li>
+            </ul>
         </div>
-     <a href="/medialibary/export_emp_excel/">导出</a>
-    <aside class="paging">
-            <a>当前{{ page_data.number }}页</a>
-            <a href="{% url 'medialibary:download_mode'%}?page=1">第一页</a>
-            {% for i in page_data.paginator.page_range %}
-            <a href="{% url 'medialibary:download_mode' %}?page={{i}}">{{i}}</a>
-            {% endfor %}
-            <a href="{% url 'medialibary:download_mode'%}?page={{page_data.paginator.num_pages}}">最后一页</a>
-        </aside>
-
     </div>
-    </div>
+</div>
+    <a href="/medialibary/export_emp_excel/">导出</a>
 
     <script>
-    function searchInfo(){
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val()
-        var args_data = {
-                "fetchstatus": $("#fetchstatus").val().trim(),
-                "is_auther": $("#is_auther").val().trim(),
-                "fetchlevel": $("#fetchlevel").val().trim(),
-                "url": $("#url").val().trim(),
-                "is_static": $("#is_static").val().trim(),
-                "is_xunxun": $("#is_xunxun").val().trim(),
-                "is_sousou": $("#is_sousou").val().trim(),
-            };
-        $.ajax({
-            url: '/medialibary/show_data/',
-            dateType: 'json',
-            type: 'POST',
-            data: args_data,
-            headers: {'X-CSRFTOKEN':csrf},
-            success: function(data){
-                resu = JSON.parse(data)
-                if(resu.code == '200'){
-                    alter('成功')
-                    page_data = resu.page_data;
-                }
+    var vm = new Vue({
+        el: '#vm_data',
+        data: {
+            searchdatas: [],
+            page: 1,
+            page_items: {},
+        },
+        delimiters: ["${", "}"],
+        methods: {
+            searchInfo: function (page_no) {
+                var page = page_no? page_no:1;
+                var data = {
+                    "fetchstatus": $("#fetchstatus").val().trim(),
+                    "is_auther": $("#is_auther").val().trim(),
+                    "fetchlevel": $("#fetchlevel").val().trim(),
+                    "url": $("#url").val().trim(),
+                    "is_static": $("#is_static").val().trim(),
+                    "is_xunxun": $("#is_xunxun").val().trim(),
+                    "is_sousou": $("#is_sousou").val().trim()
+                };
+                var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+                $.ajax({
+                    type: 'POST',
+                    url: '/medialibary/get_search_data/',
+                    data: {"fetchstatus": $("#fetchstatus").val().trim(),
+                            "is_auther": $("#is_auther").val().trim(),
+                            "fetchlevel": $("#fetchlevel").val().trim(),
+                            "url": $("#url").val().trim(),
+                            "is_static": $("#is_static").val().trim(),
+                            "is_xunxun": $("#is_xunxun").val().trim(),
+                            "is_sousou": $("#is_sousou").val().trim(),
+                            "page": page},
+                    headers: {'X-CSRFTOKEN':csrf},
+                    success: function (data) {
+                        var datas = JSON.parse(data);
+                        vm.searchdatas = datas.searchdatas;
+                        vm.page_items = datas.page_items;
+{#                        vm.feedInfo()#}
+{#                        alert('成功')#}
+                    },
+                    error: function () {
+                        alert('error');
+                    }
+                });
             },
-            error: function(data){
-                alter('失败')
+{#            feedInfo: function (page_no) {#}
+{#                var page = page_no ? page_no : 1;#}
+{#                var csrf = $('input[name="csrfmiddlewaretoken"]').val()#}
+{#                $.ajax({#}
+{#                    type: 'POST',#}
+{#                    url: '/medialibary/get_search_data/',#}
+{#                    data: {'page': page},#}
+{#                    dataType: JSON,#}
+{#                    headers: {'X-CSRFTOKEN':csrf},#}
+{#                    success: function (data) {#}
+{#                        var datas = JSON.parse(data);#}
+{#                        vm.searchdatas = datas.searchdatas;#}
+{#                        vm.page_items = datas.page_items;#}
+{#                    },#}
+{#                    error: function () {#}
+{#                        alert('error');#}
+{#                    }#}
+{#                });#}
+{#            },#}
+            mounted: function () {
+                this.searchInfo();
             }
-        })
-    }
-    </script>
+        }
+    });
+
+
+</script>
+{#            searchInfo: function (page_no) {#}
+{#                var page = page_no?page_no:1;#}
+{#                $.ajax({#}
+{#                    type: 'POST',#}
+{#                    url: '/medialibary/show_data',#}
+{#                    data: {'page': page,#}
+{#                        "fetchstatus": $("#fetchstatus").val().trim(),#}
+{#                        "is_auther": $("#is_auther").val().trim(),#}
+{#                        "fetchlevel": $("#fetchlevel").val().trim(),#}
+{#                        "url": $("#url").val().trim(),#}
+{#                        "is_static": $("#is_static").val().trim(),#}
+{#                        "is_xunxun": $("#is_xunxun").val().trim(),#}
+{#                        "is_sousou": $("#is_sousou").val().trim()},#}
+{#                    success: function(data){#}
+{#                        var datas = JSON.parse(data);#}
+{#                        vm.page_data = datas.page_data;#}
+{#                    },#}
+{#                    error: function(){#}
+{#                        alert('失败');#}
+{#                    }#}
+{#                });#}
+{#            },#}
+{#        }#}
+{#    })#}
+{#    function searchInfo(){#}
+{#        var csrf = $('input[name="csrfmiddlewaretoken"]').val()#}
+{#        var args_data = {#}
+{#                "fetchstatus": $("#fetchstatus").val().trim(),#}
+{#                "is_auther": $("#is_auther").val().trim(),#}
+{#                "fetchlevel": $("#fetchlevel").val().trim(),#}
+{#                "url": $("#url").val().trim(),#}
+{#                "is_static": $("#is_static").val().trim(),#}
+{#                "is_xunxun": $("#is_xunxun").val().trim(),#}
+{#                "is_sousou": $("#is_sousou").val().trim(),#}
+{#            };#}
+{#        $.ajax({#}
+{#            url: '/medialibary/get_search_data/',#}
+{#            dateType: 'json',#}
+{#            type: 'POST',#}
+{#            data: args_data,#}
+{#            headers: {'X-CSRFTOKEN':csrf},#}
+{#            success: function(data){#}
+{#                if(data.code == '200'){#}
+{#                    locations.href = '/medialibary/edit_brand/'#}
+{#                    alert('成功')#}
+{#                }#}
+{#            },#}
+{#            error: function(data){#}
+{#                alert('败')#}
+{#            }#}
+{#        })#}
+{#    }#}
+
     <script>
     function del_medialibary(id){
         var csrf = $('input[name="csrfmiddlewaretoken"]').val()
@@ -323,19 +377,18 @@
         }
     </script>
     <script>
-
-            function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
     }
     return cookieValue;
 }

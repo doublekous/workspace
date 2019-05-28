@@ -63,18 +63,18 @@ def file_down(request):
 def download_mode(request):
     """导入csv到数据库"""
     if request.method == 'GET':
-        try:
-            page = int(request.GET.get('page', 1))
-        except Exception as e:
-            page = 1
-        data = MediaLibrary.objects.filter(is_del=0).all()
-        paninator = Paginator(data, 10)
-        page_data = paninator.page(page)
-        print(type(page_data))
-        print(page_data)
-        print(data)
-        print(type(data))
-        return render(request, 'medialibary/download_mode.html', {'page_data': page_data})
+        # try:
+        #     page = int(request.GET.get('page', 1))
+        # except Exception as e:
+        #     page = 1
+        # data = MediaLibrary.objects.filter(is_del=0).all()
+        # paninator = Paginator(data, 10)
+        # page_data = paninator.page(page)
+        # print(type(page_data))
+        # print(page_data)
+        # print(data)
+        # print(type(data))
+        return render(request, 'medialibary/download_mode.html', locals())
     if request.method == 'POST':
         file_obj = request.FILES.get('file_upload_trumpl')
         ori_name = file_obj.name
@@ -167,10 +167,8 @@ def export_emp_excel(request):
     resp['content-disposition'] = 'attachment; filename="models.csv"'
     return resp
 
-@csrf_protect
-def show_data(request):
-    if request.method == 'GET':
-        return render(request, 'medialibary/download_mode.html')
+
+def get_search_data(request):
     if request.method == 'POST':
         page = int(request.POST.get('page', '1'))
         fetchstatus = request.POST.get('fetchstatus')
@@ -180,6 +178,8 @@ def show_data(request):
         is_static = request.POST.get('is_static')
         is_xunxun = request.POST.get('is_xunxun')
         is_sousou = request.POST.get('is_sousou')
+        page_n = 10 * (page - 1)
+        page_m = 10 * page
         data = MediaLibrary.objects.filter(fetchstatus=fetchstatus).order_by('-id')
         if data:
             seconddata = data.filter(is_author=is_auther).order_by('-id')
@@ -202,16 +202,42 @@ def show_data(request):
             error = '是否静态在数据库没有符合状态的数据'
             return render(request, 'medialibary/download_mode.html', {'error': error})
         if sixdata:
-            sevendata_count = sixdata.filter(is_sousou=is_sousou).count()
-            subscribes = sixdata.filter(is_sousou=is_sousou).all().order_by('-id')
-            paninator = Paginator(subscribes, 10)
-            page_data = paninator.page(page)
-            print(page_data)
-            print(type(page_data))
-            return render(request, 'medialibary/download_mode.html', {'code': 200, 'page_data': page_data})
+            filter_all_count = sixdata.filter(is_sousou=is_sousou).count()
+            search_data = sixdata.filter(is_sousou=is_sousou).all().order_by('-id')[page_n:page_m]
+            page_items = Pagenate(page, range(0, filter_all_count), 10).json_result()
+            searchdatas = []
+            for s in search_data:
+                searchdatas.append({
+                    'id': s.id,
+                    'url': s.url,
+                    'secondpage': s.secondpage,
+                    'thirdpage': s.thirdpage,
+                    'xunxun_nickname': s.xunxun_nickname,
+                    'sousou_nickname': s.sousou_nickname,
+                    'website': s.website,
+                    'sitetype': s.sitetype,
+                    'regional': s.regional,
+                    'fetchlevel': s.fetchlevel,
+                    'yesterdaycapture': s.yesterdaycapture,
+                    'is_author': s.is_author,
+                    'addpaper': s.addpaper,
+                    'addtime': s.addtime.strftime("%Y-%m-%d %H:%M:%S"),
+                    'updatetime': s.updatetime.strftime("%Y-%m-%d %H:%M:%S"),
+                    'latestfetchtime': s.latestfetchtime.strftime("%Y-%m-%d %H:%M:%S"),
+                    'fetchstatus': s.fetchstatus,
+                    'is_process': s.is_process,
+                    'note': s.note,
+                    'is_xuxu': s.is_xuxu,
+                    'is_sousou': s.is_sousou,
+                    'many_choice': s.many_choice,
+                    'is_static': s.is_static
+                })
+                print(searchdatas)
+            return HttpResponse(json.dumps({'searchdatas': searchdatas, 'page_items': page_items}))
         else:
             error = '搜索的是否应用迅迅数据库没有对应的返回值'
-            return render(request, 'medialibary/download_mode.html', {'error': error})
+        return HttpResponse('ok')
+
 
 
 def edit_brand(request, id):
