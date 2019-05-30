@@ -28,11 +28,13 @@
                     </div>
     <div class="form-group">
         <div class="select clearfix">
-            <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
+            <label class="w30 ar fl">是否：</label>
             <div class="select w50 fr">
                 <select name="is_auther" id="is_auther" class="form-control">
                     <option value="1">无</option>
                     <option value="2">有作者</option>
+                    <option value="3">有互动</option>
+                    <option value="4">有原创</option>
                     <option value="23">有作者，有互动</option>
                     <option value="24">有作者，有原创</option>
                     <option value="25">有作者，有转载</option>
@@ -78,7 +80,7 @@
     </div>
     <div class="form-group">
         <div class="select clearfix">
-            <label class="w30 ar fl">是否是否静态：</label>
+            <label class="w30 ar fl">是否是静态：</label>
             <div class="select w50 fr">
                 <select name="is_static" id="is_static" class="form-control">
                     <option value="1">是静态</option>
@@ -136,13 +138,13 @@
             <table width="2000"border="1" >
             <thead>
                 <tr>
-                    <th style="text-align: center"width="50" >选中</th>
+                    <th style="text-align: center"width="50" >ID</th>
                     <th style="text-align: center" width="100">链接</th>
+                    <th style="text-align: center" width="120">网站</th>
                     <th style="text-align: center" width="120">二级版面</th>
                     <th style="text-align: center" width="120">三级版面</th>
                     <th style="text-align: center" width="120">讯讯别称</th>
                     <th style="text-align: center" width="120">搜搜别称</th>
-                    <th style="text-align: center" width="120">网站</th>
                     <th style="text-align: center" width="120">网站类型</th>
                     <th style="text-align: center" width="120">地域</th>
                     <th style="text-align: center" width="120">抓取等级</th>
@@ -163,17 +165,18 @@
                 </tr>
             </thead>
             <tbody>
+
                 <template v-for="result in searchdatas">
                     <tr>
-                    <th style="text-align: center" width="1"><li style="list-style: none"><input type="checkbox" name=""></li></th>
-                    <th style="text-align: center" width="20">
-                        <a href="{{ result.url }}">
-                        ${ result.url }</a></th>
+                        <th style="text-align: center">${ result.id }</th>
+{#                    <th style="text-align: center" width="1"><li style="list-style: none"><input type="checkbox" name=""></li></th>#}
+                    <th style="text-align: center" width="20"><a target="_blank" :href="result.url">${ result.url }</a></th>
+                        <th style="text-align: center">${ result.website }</th>
                     <th style="text-align: center">${ result.secondpage }</th>
                     <th style="text-align: center" width="50">${ result.thirdpage }</th>
                     <th style="text-align: center">${ result.xunxun_nickname }</th>
                     <th style="text-align: center" width="50">${ result.sousou_nickname }</th>
-                    <th style="text-align: center">${ result.website }</th>
+
                     <th style="text-align: center" width="50">${ result.sitetype }</th>
                     <th style="text-align: center">${ result.regional }</th>
                     <th style="text-align: center">${ result.fetchlevel }</th>
@@ -191,11 +194,12 @@
                     <th style="text-align: center">${ result.many_choice }</th>
                     <th style="text-align: center">${ result.is_static }</th>
                     <th style="text-align: center" width="140">
-{#                        <a class="btn btn-primary" href="${ url 'medialibary:edit_brand' result.id }">编辑</a>#}
-                        <a onclick="del_medialibary({{ result.id }})" title="删除" class="btn btn-primary">删除</a>
+                        <a class="btn btn-primary" :href="'/medialibary/edit_brand/'+result.id">编辑</a>
+                        <button @click="del_medialibary(result.id)" title="删除" class="btn btn-primary">删除</button>
                     </th>
                     </tr>
                 </template>
+
             </tbody>
             </table>
         </div>
@@ -214,6 +218,11 @@
     </div>
 </div>
     <a href="/medialibary/export_emp_excel/">导出</a>
+<script>
+
+
+
+</script>
 
     <script>
     var vm = new Vue({
@@ -251,11 +260,15 @@
                     headers: {'X-CSRFTOKEN':csrf},
                     success: function (data) {
                         var datas = JSON.parse(data);
-                        vm.searchdatas = datas.searchdatas;
-                        vm.page_items = datas.page_items;
+                        if (datas.code==200) {
+                            vm.searchdatas = datas.searchdatas;
+                            vm.page_items = datas.page_items;
+                        } else {
+                            alert(datas.error);
+                        }
+                    },
 {#                        vm.feedInfo()#}
 {#                        alert('成功')#}
-                    },
                     error: function () {
                         alert('error');
                     }
@@ -280,10 +293,11 @@
 {#                    }#}
 {#                });#}
 {#            },#}
+            },
             mounted: function () {
                 this.searchInfo();
             }
-        }
+
     });
 
 
