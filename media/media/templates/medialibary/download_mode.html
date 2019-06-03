@@ -28,22 +28,13 @@
                     </div>
     <div class="form-group">
         <div class="select clearfix">
-            <label class="w30 ar fl">是否：</label>
+            <label class="w30 ar fl">作者/互动/原创转载是否处理：</label>
             <div class="select w50 fr">
-                <select name="is_auther" id="is_auther" class="form-control">
-                    <option value="1">无</option>
-                    <option value="2">有作者</option>
-                    <option value="3">有互动</option>
-                    <option value="4">有原创</option>
-                    <option value="23">有作者，有互动</option>
-                    <option value="24">有作者，有原创</option>
-                    <option value="25">有作者，有转载</option>
-                    <option value="235">有作者，有互动，有转载</option>
-                    <option value="234">有作者，有互动，有原创</option>
-                    <option value="34">有互动，有原创</option>
-                    <option value="35">有互动，有转载</option>
-                    <option value="345">有互动，有原创，有转载</option>
-                    <option value="2345">有作者，有互动，有原创，有转载</option>
+                <select name="is_process" id="is_process" class="form-control">
+                    <option  value="1">全部</option>
+                    <option value="2">未处理</option>
+                    <option value="3">已处理</option>
+
                 </select>
             </div>
         </div>
@@ -53,7 +44,7 @@
             <label class="w30 ar fl">抓取等级：</label>
             <div class="select w50 fr">
                 <select name="fetchlevel" id="fetchlevel" class="form-control">
-{#                                        <option value="1">全部</option>#}
+                    <option value="1">全部</option>
                     <option value="2">高</option>
                     <option value="3">中</option>
                     <option value="4">低</option>
@@ -116,10 +107,22 @@
     <div class="form-group">
         <button type="button" class="btn btn-primary"onclick="vm.searchInfo()" >搜索</button>
     </div>
-</div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="download()">导出</button>
+    </div>
+
     <h1>划重点：</h1>
-    <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件，是否搜搜和是否讯讯没有用写1，上传成功后刷新网址栏返回页面</h4>
+    <h4>下载模板，按照模板格式上传文件，按照模板格式编写文件,上传成功后刷新网址栏返回页面</h4>
+    <h5>抓取等级(1, '全部')(2, '高')(3, '中')(4, '低')</h5>
+    <h5>是否有作者/互动/原创/转载(2: '有作者') ( 3: '有互动') (4: '有原创') (23: '有作者，有互动') ( 24: '有作者，有原创')(25: '有作者，有转载')
+    (235: '有作者，有互动，有转载')(234: '有作者有互动，有原创')(34: '有互动，有原创')(35: '有互动，有转载')(2345: '有作者，有互动，有原创，有转载')</h5>
+    <h5>抓取状态:(1, '全部') (2, '失败') (3, '全部')</h5>
+    <h5>是否处理:(1, '全部') (2, '未处理') (3, '已处理')</h5>
+    <h5>是否是静态:(1, '静态')(2, '动态')</h5>
+    <h5>是否应用到迅迅/搜搜:(1, '全部')(2, '是')(3, '否')</h5>
     <br>
+
+
     点击 :<a href="/medialibary/file_down/">下载模板</a>
     <br>
     <div class="form-group file">
@@ -195,7 +198,7 @@
                     <th style="text-align: center">${ result.is_static }</th>
                     <th style="text-align: center" width="140">
                         <a class="btn btn-primary" :href="'/medialibary/edit_brand/'+result.id">编辑</a>
-                        <button @click="del_medialibary(result.id)" title="删除" class="btn btn-primary">删除</button>
+                        <button @click="del_medialibary(result.id)" id="result.id" title="删除" class="btn btn-primary">删除</button>
                     </th>
                     </tr>
                 </template>
@@ -217,180 +220,148 @@
         </div>
     </div>
 </div>
-    <a href="/medialibary/export_emp_excel/">导出</a>
+    </div>
+
 <script>
-
-
-
+    function download() {
+        var args_data = {
+            "fetchstatus": $("#fetchstatus").val().trim(),
+            "is_process": $("#is_process").val().trim(),
+            "fetchlevel": $("#fetchlevel").val().trim(),
+            "url": $("#url").val().trim(),
+            "is_static": $("#is_static").val().trim(),
+            "is_xunxun": $("#is_xunxun").val().trim(),
+            "is_sousou": $("#is_sousou").val().trim(),
+        };
+        var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+{#        $.ajax({#}
+{#            type: 'GET',#}
+{#            url: '/medialibary/export_emp_excel/',#}
+{#            data: args_data,#}
+{#            success: function(data) {#}
+{#                window.location.href = "/medialibary/export_emp_excel/"#}
+{#            },#}
+{#            error: function(XMLHttpRequest, textStatus, errorThrown) {#}
+{#                alert('失败')#}
+{#            }#}
+{#        });#}
+        window.location.href = "/medialibary/export_emp_excel/?fetchstatus="+$("#fetchstatus").val().trim()+"&is_process="+$("#is_process").val().trim()+
+                        "&fetchlevel="+$("#fetchlevel").val().trim()+"&is_static="+$("#is_static").val().trim()+"&is_xunxun="+$("#is_xunxun").val().trim()+"&is_sousou="+ $("#is_sousou").val().trim();
+    }
 </script>
-
-    <script>
-    var vm = new Vue({
-        el: '#vm_data',
-        data: {
-            searchdatas: [],
-            page: 1,
-            page_items: {},
-        },
-        delimiters: ["${", "}"],
-        methods: {
-            searchInfo: function (page_no) {
-                var page = page_no? page_no:1;
-                var data = {
+<script>
+var vm = new Vue({
+    el: '#vm_data',
+    data: {
+        searchdatas: [],
+        page: 1,
+        page_items: {},
+    },
+    delimiters: ["${", "}"],
+    methods: {
+        searchInfo: function (page_no) {
+            var page = page_no ? page_no : 1;
+            var csrf = $('input[name="csrfmiddlewaretoken"]').val()
+            $.ajax({
+                type: 'POST',
+                url: '/medialibary/get_search_data/',
+                data: {
                     "fetchstatus": $("#fetchstatus").val().trim(),
-                    "is_auther": $("#is_auther").val().trim(),
+                    "is_process": $("#is_process").val().trim(),
                     "fetchlevel": $("#fetchlevel").val().trim(),
                     "url": $("#url").val().trim(),
                     "is_static": $("#is_static").val().trim(),
                     "is_xunxun": $("#is_xunxun").val().trim(),
-                    "is_sousou": $("#is_sousou").val().trim()
-                };
+                    "is_sousou": $("#is_sousou").val().trim(),
+                    "page": page
+                },
+                headers: {'X-CSRFTOKEN': csrf},
+                success: function (data) {
+                    var datas = JSON.parse(data);
+                    if (datas.code == 200) {
+                        vm.searchdatas = datas.searchdatas;
+                        vm.page_items = datas.page_items;
+                    } else {
+                        alert(datas.error);
+                    }
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        },
+        del_medialibary: function (id) {
+            var r = confirm("确定要删除吗？");
+            if (r == true) {
                 var csrf = $('input[name="csrfmiddlewaretoken"]').val()
                 $.ajax({
+                    url: '/medialibary/del_medialibary/' + id + '/',
+                    dateType: 'json',
                     type: 'POST',
-                    url: '/medialibary/get_search_data/',
-                    data: {"fetchstatus": $("#fetchstatus").val().trim(),
-                            "is_auther": $("#is_auther").val().trim(),
-                            "fetchlevel": $("#fetchlevel").val().trim(),
-                            "url": $("#url").val().trim(),
-                            "is_static": $("#is_static").val().trim(),
-                            "is_xunxun": $("#is_xunxun").val().trim(),
-                            "is_sousou": $("#is_sousou").val().trim(),
-                            "page": page},
-                    headers: {'X-CSRFTOKEN':csrf},
+                    headers: {'X-CSRFTOKEN': csrf},
                     success: function (data) {
-                        var datas = JSON.parse(data);
-                        if (datas.code==200) {
-                            vm.searchdatas = datas.searchdatas;
-                            vm.page_items = datas.page_items;
-                        } else {
-                            alert(datas.error);
+                        if (data.code == '200') {
+                            alert('删除成功')
+                            {#                locations.href = '/medialibary/download_mode/'#}
+                            window.location.reload();
+
                         }
                     },
-{#                        vm.feedInfo()#}
-{#                        alert('成功')#}
-                    error: function () {
-                        alert('error');
+                    error: function (data) {
+                        alert('删除失败')
                     }
                 });
-            },
-{#            feedInfo: function (page_no) {#}
-{#                var page = page_no ? page_no : 1;#}
-{#                var csrf = $('input[name="csrfmiddlewaretoken"]').val()#}
-{#                $.ajax({#}
-{#                    type: 'POST',#}
-{#                    url: '/medialibary/get_search_data/',#}
-{#                    data: {'page': page},#}
-{#                    dataType: JSON,#}
-{#                    headers: {'X-CSRFTOKEN':csrf},#}
-{#                    success: function (data) {#}
-{#                        var datas = JSON.parse(data);#}
-{#                        vm.searchdatas = datas.searchdatas;#}
-{#                        vm.page_items = datas.page_items;#}
-{#                    },#}
-{#                    error: function () {#}
-{#                        alert('error');#}
-{#                    }#}
-{#                });#}
-{#            },#}
-            },
-            mounted: function () {
-                this.searchInfo();
             }
-
-    });
-
-
+        }
+    },
+    mounted: function () {
+            this.searchInfo();
+        }
+});
 </script>
-{#            searchInfo: function (page_no) {#}
-{#                var page = page_no?page_no:1;#}
-{#                $.ajax({#}
-{#                    type: 'POST',#}
-{#                    url: '/medialibary/show_data',#}
-{#                    data: {'page': page,#}
-{#                        "fetchstatus": $("#fetchstatus").val().trim(),#}
-{#                        "is_auther": $("#is_auther").val().trim(),#}
-{#                        "fetchlevel": $("#fetchlevel").val().trim(),#}
-{#                        "url": $("#url").val().trim(),#}
-{#                        "is_static": $("#is_static").val().trim(),#}
-{#                        "is_xunxun": $("#is_xunxun").val().trim(),#}
-{#                        "is_sousou": $("#is_sousou").val().trim()},#}
-{#                    success: function(data){#}
-{#                        var datas = JSON.parse(data);#}
-{#                        vm.page_data = datas.page_data;#}
-{#                    },#}
-{#                    error: function(){#}
-{#                        alert('失败');#}
-{#                    }#}
-{#                });#}
-{#            },#}
-{#        }#}
-{#    })#}
-{#    function searchInfo(){#}
+
+{#<script>#}
+{#function del_medialibary(id){#}
+{#    var r=confirm("确定要删除吗？")#}
+{#    if (r==true) {#}
 {#        var csrf = $('input[name="csrfmiddlewaretoken"]').val()#}
-{#        var args_data = {#}
-{#                "fetchstatus": $("#fetchstatus").val().trim(),#}
-{#                "is_auther": $("#is_auther").val().trim(),#}
-{#                "fetchlevel": $("#fetchlevel").val().trim(),#}
-{#                "url": $("#url").val().trim(),#}
-{#                "is_static": $("#is_static").val().trim(),#}
-{#                "is_xunxun": $("#is_xunxun").val().trim(),#}
-{#                "is_sousou": $("#is_sousou").val().trim(),#}
-{#            };#}
 {#        $.ajax({#}
-{#            url: '/medialibary/get_search_data/',#}
+{#            url: '/medialibary/del_medialibary/' + id + '/',#}
 {#            dateType: 'json',#}
 {#            type: 'POST',#}
-{#            data: args_data,#}
-{#            headers: {'X-CSRFTOKEN':csrf},#}
-{#            success: function(data){#}
-{#                if(data.code == '200'){#}
-{#                    locations.href = '/medialibary/edit_brand/'#}
-{#                    alert('成功')#}
+{#            headers: {'X-CSRFTOKEN': csrf},#}
+{#            success: function (data) {#}
+{#                if (data.code == '200') {#}
+{#                    alert('删除成功')#}
+                    {#                locations.href = '/medialibary/download_mode/'#}
+{#                    window.location.reload();#}
+{##}
 {#                }#}
 {#            },#}
-{#            error: function(data){#}
-{#                alert('败')#}
+{#            error: function (data) {#}
+{#                alert('删除失败')#}
 {#            }#}
 {#        })#}
 {#    }#}
+{#}#}
+{#</script>#}
 
-    <script>
-    function del_medialibary(id){
-        var csrf = $('input[name="csrfmiddlewaretoken"]').val()
-        $.ajax({
-            url:'/medialibary/del_medialibary/'+ id +'/',
-            dateType: 'json',
-            type: 'POST',
-            headers: {'X-CSRFTOKEN':csrf},
-            success: function(data){
-                if(data.code == '200'){
-                    alert('删除成功')
-                    locations.href = '/medialibary/download_mode/'
-                }
-            },
-            error: function(data){
-                alert('删除失败')
-            }
-        })
-    }
-    </script>
-
-    <script type="text/javascript">
-        function check_filepath(){
-            if(!$("#file_upload_trumpl").val()){
-                alert("请先选择文件！");
-                return false;
-            }
-            var strs = $("#file_upload_trumpl").val().split('.');
-            if((strs[strs.length-1] != "csv")){
-                alert("请上传csv格式的文件！");
-                return false;
-            }
-            $("#download_mode").submit();
+<script type="text/javascript">
+    function check_filepath(){
+        if(!$("#file_upload_trumpl").val()){
+            alert("请先选择文件！");
+            return false;
         }
-    </script>
-    <script>
+        var strs = $("#file_upload_trumpl").val().split('.');
+        if((strs[strs.length-1] != "csv")){
+            alert("请上传csv格式的文件！");
+            return false;
+        }
+        $("#download_mode").submit();
+    }
+</script>
+
+<script>
         function getCookie(name) {
             var cookieValue = null;
             if (document.cookie && document.cookie != '') {
@@ -420,5 +391,6 @@ $.ajaxSetup({
 })
 
     </script>
+
 
 {% endblock %}
