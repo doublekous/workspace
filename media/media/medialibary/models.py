@@ -29,7 +29,7 @@ class MediaLibrary(models.Model):
     fetchstatus = models.IntegerField(verbose_name="抓取状态", choices=((1, '全部'), (2, '失败'), (3, '完成')),blank=True, null=True)
     is_process = models.IntegerField(verbose_name="是否处理", choices=((1, '全部'),(2, '未处理'), (3, '已处理'), (4, '无')),blank=True, null=True)
     note = models.CharField(verbose_name="备注", max_length=255, blank=True, null=True)
-    is_static = models.IntegerField(verbose_name="是否是静态",choices=((1, '是静态'), (2,'是动态')))
+    is_static = models.IntegerField(verbose_name="是否是静态",choices=((1, '是静态'), (2,'是动态'),(3, '全部')))
     choice_mode = (
         (1, '全部'),
         (2, '是'),

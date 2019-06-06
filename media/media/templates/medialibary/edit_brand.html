@@ -105,7 +105,7 @@
                 <ul class="ulColumn2">
                     <li>
                         <span class="item_name" style="width:120px;">url：</span>
-                        <input type="text" name="url" value="{{edit_medialibary.url}}" class="textbox textbox_295" placeholder="url..."/>
+                        <input id="edit_medialibary_url" type="text" name="url" value="{{edit_medialibary.url}}" class="textbox textbox_295" placeholder="url..."/>
                     </li>
                     <li>
                         <span class="item_name" style="width:120px;">二级版面：</span>
@@ -195,12 +195,17 @@
                             <!--&lt;strong&gt;HTML内容&lt;/strong&gt;-->
                         <!--</textarea>-->
                     <!--</li>-->
-                    <li>
-                        <span class="item_name" style="width:120px;"></span>
                         <input type="submit" class="link_btn"/>
-                    </li>
+{#                        <button id="btn_save" class="btn-primary">提交</button>#}
+
                 </ul>
             </section>
         </form>
+    <script>
+        $("btn_save").click(function () {
+            var args = {};
+            arg[""]
+        })
+    </script>
 {% endblock %}
 

@@ -32,8 +32,8 @@
             <div class="select w50 fr">
                 <select name="is_process" id="is_process" class="form-control">
                     <option  value="1">全部</option>
-                    <option value="2">未处理</option>
-                    <option value="3">已处理</option>
+                    <option value="2">已处理</option>
+                    <option value="3">未处理</option>
 
                 </select>
             </div>
@@ -52,30 +52,16 @@
             </div>
         </div>
     </div>
+
+{#    </div>#}
     <div class="form-group">
         <div class="select clearfix">
-            <label class="w30 ar fl">链接：</label>
-            <div class="select w50 fr">
-                <select name="url" id="url" class="form-control">
-                    <option value="1">链接</option>
-                    <option value="2">网站</option>
-                    <option value="3">二级版面</option>
-                    <option value="4">三级版面</option>
-                    <option value="5">危机APP别称</option>
-                    <option value="6">搜搜别称</option>
-                    <option value="7">网站类型</option>
-                    <option value="8">地域</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="select clearfix">
-            <label class="w30 ar fl">是否是静态：</label>
+            <label class="w30 ar fl">是否静态：</label>
             <div class="select w50 fr">
                 <select name="is_static" id="is_static" class="form-control">
-                    <option value="1">是静态</option>
-                    <option value="2">是动态</option>
+                    <option value="3">全部</option>
+                    <option value="1">静态</option>
+                    <option value="2">动态</option>
                 </select>
             </div>
         </div>
@@ -91,7 +77,7 @@
                 </select>
             </div>
         </div>
-</div>
+    </div>
     <div class="form-group">
         <div class="select clearfix">
             <label class="w30 ar fl">是否应用搜搜：</label>
@@ -103,7 +89,35 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div><br/>
+    <div class="form-group">
+        <div class="select clearfix">
+            <label class="w30 ar fl">链接：</label>
+            <div class="select w50 fr">
+                <select name="many_choice" id="many_choice" class="form-control">
+{#                    <option value="9">全部</option>#}
+                    <option value="2">网站</option>
+                    <option value="1">链接</option>
+                    <option value="3">二级版面</option>
+                    <option value="4">三级版面</option>
+                    <option value="5">迅迅别称</option>
+                    <option value="6">搜搜别称</option>
+                    <option value="7">网站类型</option>
+                    <option value="8">地域</option>
+                </select>
+            </div>
+        </div>
+{#    </div>#}
+{#    <div class="form-group">#}
+{#            <label style="height: 50px" class="w30 ar fl"></label>#}
+{#            <div style="height: 60px" class="form-control" id="1">#}
+                <br/>
+                <textarea type="text" style="height: 50px" name="second_many_choice" id="second_many_choice" rows="10" class="input-large">腾讯网</textarea><br/>
+                每行输入一个关键词<br/>
+                网站类型如需要多条件搜索,一组关键词用英文字母隔开<br/>
+
+            </div>
+        </div>
     <div class="form-group">
         <button type="button" class="btn btn-primary"onclick="vm.searchInfo()" >搜索</button>
     </div>
@@ -117,8 +131,8 @@
     <h5>是否有作者/互动/原创/转载(2: '有作者') ( 3: '有互动') (4: '有原创') (23: '有作者，有互动') ( 24: '有作者，有原创')(25: '有作者，有转载')
     (235: '有作者，有互动，有转载')(234: '有作者有互动，有原创')(34: '有互动，有原创')(35: '有互动，有转载')(2345: '有作者，有互动，有原创，有转载')</h5>
     <h5>抓取状态:(1, '全部') (2, '失败') (3, '全部')</h5>
-    <h5>是否处理:(1, '全部') (2, '未处理') (3, '已处理')</h5>
-    <h5>是否是静态:(1, '静态')(2, '动态')</h5>
+    <h5>作者/互动/原创转载是否处理:(1, '全部') (2, '未处理') (3, '已处理')</h5>
+    <h5>是否静态:(1, '静态')(2, '动态')</h5>
     <h5>是否应用到迅迅/搜搜:(1, '全部')(2, '是')(3, '否')</h5>
     <br>
 
@@ -146,7 +160,7 @@
                     <th style="text-align: center" width="120">网站</th>
                     <th style="text-align: center" width="120">二级版面</th>
                     <th style="text-align: center" width="120">三级版面</th>
-                    <th style="text-align: center" width="120">讯讯别称</th>
+                    <th style="text-align: center" width="120">迅迅别称</th>
                     <th style="text-align: center" width="120">搜搜别称</th>
                     <th style="text-align: center" width="120">网站类型</th>
                     <th style="text-align: center" width="120">地域</th>
@@ -158,12 +172,12 @@
                     <th style="text-align: center" width="120">修改时间</th>
                     <th style="text-align: center" width="120">最新抓取时间</th>
                     <th style="text-align: center" width="120">抓取状态</th>
-                    <th style="text-align: center" width="150">作者/互动/原创是否转载</th>
+                    <th style="text-align: center" width="150">作者/互动/原创是否处理</th>
                     <th style="text-align: center" width="120">备注</th>
-                    <th style="text-align: center" width="120">是否应用讯讯</th>
+                    <th style="text-align: center" width="120">是否应用迅迅</th>
                     <th style="text-align: center" width="120">是否应用搜搜</th>
                     <th style="text-align: center" width="120">更多</th>
-                    <th style="text-align: center" width="120">是否是静态</th>
+                    <th style="text-align: center" width="120">是否静态</th>
                     <th style="text-align: center" width="160">操作</th>
                 </tr>
             </thead>
@@ -228,25 +242,27 @@
             "fetchstatus": $("#fetchstatus").val().trim(),
             "is_process": $("#is_process").val().trim(),
             "fetchlevel": $("#fetchlevel").val().trim(),
-            "url": $("#url").val().trim(),
+            "many_choice":$("#many_choice").val().trim(),
+            "second_many_choice":$("#second_many_choice").val().trim(),
             "is_static": $("#is_static").val().trim(),
             "is_xunxun": $("#is_xunxun").val().trim(),
             "is_sousou": $("#is_sousou").val().trim(),
         };
         var csrf = $('input[name="csrfmiddlewaretoken"]').val()
-{#        $.ajax({#}
-{#            type: 'GET',#}
-{#            url: '/medialibary/export_emp_excel/',#}
-{#            data: args_data,#}
-{#            success: function(data) {#}
-{#                window.location.href = "/medialibary/export_emp_excel/"#}
-{#            },#}
-{#            error: function(XMLHttpRequest, textStatus, errorThrown) {#}
-{#                alert('失败')#}
-{#            }#}
-{#        });#}
-        window.location.href = "/medialibary/export_emp_excel/?fetchstatus="+$("#fetchstatus").val().trim()+"&is_process="+$("#is_process").val().trim()+
-                        "&fetchlevel="+$("#fetchlevel").val().trim()+"&is_static="+$("#is_static").val().trim()+"&is_xunxun="+$("#is_xunxun").val().trim()+"&is_sousou="+ $("#is_sousou").val().trim();
+        $.ajax({
+            type: 'POST',
+            url: '/medialibary/export_emp_excel/',
+            data: args_data,
+            success: function(data) {
+                window.location.href = "/medialibary/export_emp_excel/"
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('失败')
+            }
+        });
+{#        window.location.href = "/medialibary/export_emp_excel/?fetchstatus="+$("#fetchstatus").val().trim()+"&is_process="+$("#is_process").val().trim()+#}
+{#                        "&fetchlevel="+$("#fetchlevel").val().trim()+"&is_static="+$("#is_static").val().trim()+"&is_xunxun="+$("#is_xunxun").val().trim()+#}
+{#                "&is_sousou="+ $("#is_sousou").val().trim()+"&many_choice="+$("#many_choice").val().trim()+"&second_many_choice="+$("#second_many_choice").val().trim();#}
     }
 </script>
 <script>
@@ -269,7 +285,8 @@ var vm = new Vue({
                     "fetchstatus": $("#fetchstatus").val().trim(),
                     "is_process": $("#is_process").val().trim(),
                     "fetchlevel": $("#fetchlevel").val().trim(),
-                    "url": $("#url").val().trim(),
+                    "many_choice": $("#many_choice").val().trim(),
+                    "second_many_choice": $("#second_many_choice").val().trim(),
                     "is_static": $("#is_static").val().trim(),
                     "is_xunxun": $("#is_xunxun").val().trim(),
                     "is_sousou": $("#is_sousou").val().trim(),
