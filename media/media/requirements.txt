@@ -64,7 +64,7 @@ itsdangerous==0.24
 jdcal==1.4
 jieba==0.39
 jieba-fast==0.53
-Jinja2==2.9.5
+Jinja2==2.11.3
 Js2Py==0.44
 jsonschema==3.0.1
 jupyter-core==4.4.0
