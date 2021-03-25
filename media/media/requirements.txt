@@ -134,7 +134,7 @@ python-redis==0.1.7
 pytz==2016.10
 pywebhdfs==0.4.1
 pywin32==224
-PyYAML==3.12
+PyYAML==5.4
 pyzmq==16.0.2
 queuelib==1.4.2
 raven==6.3.0
