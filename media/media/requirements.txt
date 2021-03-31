@@ -75,7 +75,7 @@ kazoo==2.4.0
 kiwisolver==1.0.1
 kombu==4.0.2
 lml==0.0.2
-lxml==3.7.3
+lxml==4.6.3
 macholib==1.9
 MarkupSafe==0.23
 matplotlib==2.2.3
