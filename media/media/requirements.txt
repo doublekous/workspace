@@ -92,7 +92,7 @@ olefile==0.44
 openpyxl==2.5.14
 packaging==16.8
 pandas==0.20.3
-paramiko==2.4.2
+paramiko==2.10.1
 parsel==1.2.0
 pathlib2==2.2.1
 pathtools==0.1.2
