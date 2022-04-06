@@ -167,7 +167,7 @@ sshtunnel==0.1.4
 tabulate==0.7.7
 torndb==0.3
 traitlets==4.3.1
-Twisted==17.1.0
+Twisted==22.2.0
 tzlocal==1.3
 udc-classfication==0.1.0
 uncompyle==2.0.0
