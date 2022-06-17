@@ -86,7 +86,7 @@ MySQL-python==1.2.5
 nbformat==4.4.0
 ndg-httpsclient==0.4.2
 nose==1.3.7
-numpy==1.13.1+mkl
+numpy==1.21.0
 objectpath==0.6.1
 olefile==0.44
 openpyxl==2.5.14
